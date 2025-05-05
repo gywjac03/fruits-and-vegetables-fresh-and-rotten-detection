@@ -1,0 +1,54 @@
+{
+    "user_id": 1,
+    "timestamp": "20250421_171519",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 229.13,
+                "x2": 400.36,
+                "y1": 409.77,
+                "y2": 591.19
+            },
+            "class": "fresh orange",
+            "confidence": 88.62
+        },
+        {
+            "bbox": {
+                "x1": 21.64,
+                "x2": 205.38,
+                "y1": 334.91,
+                "y2": 509.17
+            },
+            "class": "fresh orange",
+            "confidence": 88.16
+        },
+        {
+            "bbox": {
+                "x1": 192.26,
+                "x2": 351.98,
+                "y1": 103.23,
+                "y2": 284.99
+            },
+            "class": "fresh orange",
+            "confidence": 87.55
+        },
+        {
+            "bbox": {
+                "x1": 396.28,
+                "x2": 562.77,
+                "y1": 492.83,
+                "y2": 640
+            },
+            "class": "fresh orange",
+            "confidence": 85.27
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250421_171519_upload_20250421_171518_freshOrange-197-_png.rf.60b19d7a2d8ebc462db1d7896ec2b7b6.jpg",
+    "dominant_produce": "fresh orange",
+    "expiry_date": "2025-05-19T17:15:18.965000+08:00",
+    "storage_recommendation": "Refrigerated: 3\u20134 weeks. Room Temperature: 10\u201314 days."
+}

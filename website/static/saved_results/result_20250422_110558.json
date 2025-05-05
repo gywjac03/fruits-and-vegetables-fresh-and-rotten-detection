@@ -1,0 +1,24 @@
+{
+    "user_id": 1,
+    "timestamp": "20250422_110558",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 59.53,
+                "x2": 620.91,
+                "y1": 87.04,
+                "y2": 384.17
+            },
+            "class": "rotten banana",
+            "confidence": 42.58
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250422_110558_upload_20250422_110556_rottenBanana-236-_jpg.rf.81ecbda6781ebd0cf21d91ddc45dfac4.jpg",
+    "dominant_produce": "rotten banana",
+    "expiry_date": null,
+    "storage_recommendation": null
+}

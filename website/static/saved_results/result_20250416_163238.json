@@ -1,0 +1,21 @@
+{
+    "user_id": 1,
+    "timestamp": "20250416_163238",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 540.54,
+                "x2": 781.78,
+                "y1": 287.89,
+                "y2": 586.01
+            },
+            "class": "fresh apple",
+            "confidence": 34.71
+        }
+    ],
+    "image_size": {
+        "height": 720,
+        "width": 1280
+    },
+    "image_path": "website/static/saved_results/saved_20250416_163238_camera_20250416_163235.jpg"
+}

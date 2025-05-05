@@ -1,0 +1,21 @@
+{
+    "user_id": 1,
+    "timestamp": "20250415_111436",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 205.02,
+                "x2": 438.06,
+                "y1": 147.63,
+                "y2": 608.37
+            },
+            "class": "rotten potato",
+            "confidence": 58.36
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250415_111436_upload_20250415_111430_rottenPotato-573-_jpg.rf.2dbb5073e7a434896f0a0792f67ab116.jpg"
+}

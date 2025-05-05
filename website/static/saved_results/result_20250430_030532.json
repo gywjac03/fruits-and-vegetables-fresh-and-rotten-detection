@@ -1,0 +1,24 @@
+{
+    "user_id": 4,
+    "timestamp": "20250430_030532",
+    "detections": [
+        {
+            "box": {
+                "x1": 0.77508544921875,
+                "x2": 639.7319946289062,
+                "y1": 18.9588623046875,
+                "y2": 635.0489501953125
+            },
+            "class": "rotten potato",
+            "confidence": 0.9537301659584045
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250430_030532_upload_20250430_030509_rottenPotato-80-_jpg.rf.3815d36784dbf367ceb4bb6b9484f9af.jpg",
+    "dominant_produce": "rotten potato",
+    "expiry_date": null,
+    "storage_recommendation": null
+}

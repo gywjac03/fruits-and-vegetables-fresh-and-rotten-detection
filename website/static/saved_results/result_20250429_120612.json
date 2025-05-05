@@ -1,0 +1,64 @@
+{
+    "user_id": 2,
+    "timestamp": "20250429_120612",
+    "detections": [
+        {
+            "box": {
+                "x1": 271.44158935546875,
+                "x2": 556.33447265625,
+                "y1": 235.228515625,
+                "y2": 638.721923828125
+            },
+            "class": "fresh banana",
+            "confidence": 0.7704079747200012
+        },
+        {
+            "box": {
+                "x1": 297.281494140625,
+                "x2": 640,
+                "y1": 225.57716369628906,
+                "y2": 462.8160400390625
+            },
+            "class": "fresh banana",
+            "confidence": 0.7703591585159302
+        },
+        {
+            "box": {
+                "x1": 301.36859130859375,
+                "x2": 638.8349609375,
+                "y1": 91.59255981445312,
+                "y2": 251.125244140625
+            },
+            "class": "fresh banana",
+            "confidence": 0.7173261046409607
+        },
+        {
+            "box": {
+                "x1": 157.75665283203125,
+                "x2": 472.016845703125,
+                "y1": 25.10491943359375,
+                "y2": 322.3369140625
+            },
+            "class": "fresh banana",
+            "confidence": 0.6825838685035706
+        },
+        {
+            "box": {
+                "x1": 581.4968872070312,
+                "x2": 639.9912719726562,
+                "y1": 431.1806335449219,
+                "y2": 640
+            },
+            "class": "fresh banana",
+            "confidence": 0.48569414019584656
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250429_120612_upload_20250429_120610_freshBanana-46-_png.rf.918e78a316493961ac4b495c66a39c26.jpg",
+    "dominant_produce": "fresh banana",
+    "expiry_date": "2025-05-06T12:06:11.003000+08:00",
+    "storage_recommendation": "Room Temperature: Up to 7 days in a cool, dark place. Refrigeration darkens skin but keeps fruit fresh longer."
+}

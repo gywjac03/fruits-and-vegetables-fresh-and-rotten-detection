@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+    <div class="flex flex-col sm:flex-row items-center mb-6">
+        <div class="w-32 h-32 mb-4 sm:mb-0 sm:mr-6">
+            {% if user.profile_pic and user.profile_pic != 'default.jpg' %}
+                <img src="{{ url_for('static', filename='uploads/profile_pics/' + user.profile_pic) }}" 
+                     alt="Profile Picture" class="w-full h-full object-cover rounded-full border-4 border-green-100">
+            {% else %}
+                <div class="w-32 h-32 bg-green-600 text-white rounded-full flex items-center justify-center border-4 border-green-100">
+                    <i class="ri-user-line text-4xl"></i>
+                </div>
+            {% endif %}
+        </div>
+        <div>
+            <h1 class="text-2xl font-bold text-green-800">{{ user.userName }}'s Profile</h1>
+            <p class="text-green-600">{{ user.email }}</p>
+        </div>
+    </div>
+    
+    <div class="mt-6 border-t pt-6">
+        <h2 class="text-xl font-semibold text-green-700 mb-4">Update Profile Picture</h2>
+        <form action="{{ url_for('auth.update_profile_pic') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <div class="flex flex-col">
+                <label for="profile_pic" class="text-sm font-medium text-green-700 mb-1">Choose a new profile picture</label>
+                <input type="file" id="profile_pic" name="profile_pic" accept="image/*" 
+                       class="border border-gray-300 rounded-md p-2">
+                <p class="text-xs text-gray-500 mt-1">Recommended size: 300x300 pixels. JPG, PNG or GIF.</p>
+            </div>
+            <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition">
+                Upload New Picture
+            </button>
+        </form>
+    </div>
+    
+    <div class="space-y-4 mt-6 border-t pt-6">
+        <div class="pb-4">
+            <h2 class="text-sm font-medium text-gray-500">Username</h2>
+            <p class="mt-1 text-lg text-gray-900">{{ user.userName }}</p>
+        </div>
+        
+        <div class="pb-4">
+            <h2 class="text-sm font-medium text-gray-500">Email</h2>
+            <p class="mt-1 text-lg text-gray-900">{{ user.email }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %} 

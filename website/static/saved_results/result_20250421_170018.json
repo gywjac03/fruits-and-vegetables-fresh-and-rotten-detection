@@ -1,0 +1,24 @@
+{
+    "user_id": 1,
+    "timestamp": "20250421_170018",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 0.99,
+                "x2": 599.59,
+                "y1": 0.88,
+                "y2": 637.06
+            },
+            "class": "fresh apple",
+            "confidence": 85.49
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250421_170018_upload_20250421_170017_freshApple-318-_jpg.rf.5ee43a3d8faec569334724d65ab1153d.jpg",
+    "dominant_produce": "fresh apple",
+    "expiry_date": "2025-06-02T17:00:17.493000+08:00",
+    "storage_recommendation": "Refrigerated: 4\u20136 weeks in the crisper drawer. Room Temperature: 5\u20137 days."
+}

@@ -1,0 +1,51 @@
+{
+    "user_id": 2,
+    "timestamp": "20250415_120911",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 75.09,
+                "x2": 405.5,
+                "y1": 103.38,
+                "y2": 611.39
+            },
+            "class": "fresh cucumber",
+            "confidence": 81.86
+        },
+        {
+            "bbox": {
+                "x1": 428.57,
+                "x2": 575.64,
+                "y1": 211.43,
+                "y2": 401.19
+            },
+            "class": "fresh cucumber",
+            "confidence": 45.98
+        },
+        {
+            "bbox": {
+                "x1": 95.47,
+                "x2": 278.79,
+                "y1": 0.24,
+                "y2": 141.1
+            },
+            "class": "fresh cucumber",
+            "confidence": 39.77
+        },
+        {
+            "bbox": {
+                "x1": 307.65,
+                "x2": 544.03,
+                "y1": 291.95,
+                "y2": 559.53
+            },
+            "class": "fresh cucumber",
+            "confidence": 29.57
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250415_120911_upload_20250415_120905_freshCucumber-233-_jpg.rf.5eafc9939c70e0feaf45f97e0cdd8f70.jpg"
+}

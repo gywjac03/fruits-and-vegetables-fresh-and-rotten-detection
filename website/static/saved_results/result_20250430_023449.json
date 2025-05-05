@@ -1,0 +1,24 @@
+{
+    "user_id": 4,
+    "timestamp": "20250430_023449",
+    "detections": [
+        {
+            "box": {
+                "x1": 164.03213500976562,
+                "x2": 467.7615051269531,
+                "y1": 27.6319580078125,
+                "y2": 638.3844604492188
+            },
+            "class": "fresh cucumber",
+            "confidence": 0.7978404760360718
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250430_023449_upload_20250430_023433_freshCucumber-23-_jpg.rf.3723d0f95744abc238b0243ef899b754.jpg",
+    "dominant_produce": "fresh cucumber",
+    "expiry_date": "2025-05-10T02:34:33.173000+08:00",
+    "storage_recommendation": "Refrigerated: 7\u201314 days, wrapped in paper towels and stored in a plastic bag."
+}

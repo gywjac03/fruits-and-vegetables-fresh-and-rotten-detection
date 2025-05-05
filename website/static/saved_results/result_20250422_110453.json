@@ -1,0 +1,24 @@
+{
+    "user_id": 1,
+    "timestamp": "20250422_110453",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 155.34,
+                "x2": 512.99,
+                "y1": 140.2,
+                "y2": 599.44
+            },
+            "class": "rotten banana",
+            "confidence": 90.75
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250422_110453_upload_20250422_110452_rottenBanana-344-_jpg.rf.7b58e5b396807352bbfd0696cb003217.jpg",
+    "dominant_produce": "fresh potato",
+    "expiry_date": "2025-07-06T11:03:51.989000+08:00",
+    "storage_recommendation": "Room Temperature: 2\u20133 months in a cool, dark, well-ventilated place. Refrigeration not recommended."
+}

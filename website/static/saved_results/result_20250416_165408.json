@@ -1,0 +1,21 @@
+{
+    "user_id": 1,
+    "timestamp": "20250416_165408",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 230.88,
+                "x2": 616.97,
+                "y1": 73.97,
+                "y2": 541.4
+            },
+            "class": "rotten banana",
+            "confidence": 92.56
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250416_165408_upload_20250416_165407_rottenBanana-361-_jpg.rf.4110d316456fee75381e5564a1b04583.jpg"
+}

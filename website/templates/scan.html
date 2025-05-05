@@ -1,0 +1,1396 @@
+{% extends "base.html" %}
+{% block title %}Scan{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Scan Your Produce</h1>
+    
+    <div class="space-y-6">
+        <!-- Camera Preview Section -->
+        <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+            <div id="cameraPreview" class="hidden mb-4">
+                <video id="video" class="mx-auto max-h-96 w-auto" autoplay playsinline></video>
+                <canvas id="videoOverlay" class="hidden absolute top-0 left-0 right-0 z-10 object-contain"></canvas>
+                <div id="liveDetection" class="mt-2 text-gray-700">
+                    <p id="processingStatus">Starting camera...</p>
+                    <div id="liveDetectionResults" class="text-left p-2 mt-2"></div>
+                </div>
+            </div>
+            
+            <div id="resultImageContainer" class="hidden mb-6">
+                <img id="resultImage" class="mx-auto max-h-96 cursor-pointer" alt="Result" onclick="openImageModal(this.src, 'Scan Result')">
+                <div id="resultPlaceholder" class="d-none">
+                    <div class="mt-4 text-gray-600">Loading result image...</div>
+                </div>
+            </div>
+            
+            <div id="placeholder" class="mb-4">
+                <i class="ri-camera-line text-4xl text-gray-400"></i>
+                <p class="text-gray-600 mb-4">Start your camera or upload an image to analyze</p>
+            </div>
+            
+            <div class="flex justify-center space-x-4 mb-4">
+                <button id="startCameraBtn" class="bg-blue-600 text-white px-4 py-1 rounded-button font-medium w-36 flex items-center justify-center text-sm h-12">
+                    <i class="ri-camera-line mr-1"></i>
+                    Start Camera
+                </button>
+                
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <label for="imageUpload" class="bg-green-600 text-white px-4 py-1 rounded-button font-medium w-36 cursor-pointer flex items-center justify-center text-sm h-12">
+                        <i class="ri-upload-2-line mr-1"></i>
+                        Upload Image
+                        <input type="file" name="file" accept="image/*" class="hidden" id="imageUpload">
+                    </label>
+                </form>
+            </div>
+            
+            <div id="cameraControls" class="hidden">
+                <button id="captureBtn" class="bg-green-600 text-white px-4 py-1 rounded-button font-medium">
+                    <i class="ri-camera-line mr-1"></i>
+                    Capture
+                </button>
+                <button id="stopCameraBtn" class="bg-red-600 text-white px-4 py-1 rounded-button font-medium ml-2">
+                    <i class="ri-close-line mr-1"></i>
+                    Stop Camera
+                </button>
+            </div>
+            
+            <div id="uploadStatus" class="mt-4 text-gray-600"></div>
+        </div>
+
+        <!-- Result Section -->
+        <div id="detectionArea" class="bg-gray-50 p-4 rounded-lg hidden">
+            <h2 id="result-header" class="text-lg font-medium text-gray-800 mb-2">Analysis Results:</h2>
+            <div id="detectionResults" class="text-gray-600 space-y-1"></div>
+            
+            <!-- Save Button or Login Message -->
+            {% if user.is_authenticated %}
+            <button id="saveButton" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-button font-medium hidden">
+                Save Results
+            </button>
+            {% else %}
+            <div id="loginPrompt" class="mt-4 hidden">
+                <p class="text-gray-600 mb-2">Create an account to save your results!</p>
+                <a href="{{ url_for('auth.login') }}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded-button font-medium mr-2">
+                    Log In
+                </a>
+                <a href="{{ url_for('auth.register') }}" class="inline-block bg-green-600 text-white px-4 py-2 rounded-button font-medium">
+                    Register
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Tips Section -->
+        <div class="rounded-lg mt-6 border border-gray-200 p-4">
+            <h3 class="text-base font-medium text-gray-700 mb-2">Tips for Best Results:</h3>
+            <ul class="text-sm text-gray-600 space-y-2">
+                <li class="flex items-start">
+                    <i class="ri-checkbox-circle-line text-green-600 mr-2 mt-0.5"></i>
+                    <span>Scan under good lighting</span>
+                </li>
+                <li class="flex items-start">
+                    <i class="ri-checkbox-circle-line text-green-600 mr-2 mt-0.5"></i>
+                    <span>Position your fruit in the center of the frame</span>
+                </li>
+                <li class="flex items-start">
+                    <i class="ri-checkbox-circle-line text-green-600 mr-2 mt-0.5"></i>
+                    <span>Scan uncertain parts of the fruit</span>
+                </li>
+                <li class="flex items-start">
+                    <i class="ri-checkbox-circle-line text-green-600 mr-2 mt-0.5"></i>
+                    <span>Use a plain, contrasting background for better recognition</span>
+                </li>
+                <li class="flex items-start">
+                    <i class="ri-checkbox-circle-line text-green-600 mr-2 mt-0.5"></i>
+                    <span>Scan one fruit at a time for the most accurate results</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Image Modal -->
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg overflow-hidden shadow-xl w-full max-w-4xl mx-4">
+        <div class="p-4 bg-gray-100 flex justify-between items-center">
+            <h3 class="text-lg font-semibold text-gray-800" id="imageModalTitle">Image Preview</h3>
+            <button onclick="closeImageModal()" class="text-gray-500 hover:text-gray-700">
+                <i class="ri-close-line text-xl"></i>
+            </button>
+        </div>
+        <div class="p-4">
+            <img id="modalImage" class="w-full h-auto max-h-[80vh] object-contain" alt="Modal Image">
+        </div>
+    </div>
+</div>
+
+<script>
+    // Global variables for current detections and image size
+    let currentDetections = [];
+    let currentImageSize = {};
+    let originalImagePath = "";
+    let currentResultImageUrl = ""; // Store the result image URL from the server
+    let currentTimestamp = "";
+    let currentExpiryInfo = null;  // Store expiry information
+    let stream = null;
+    let isProcessing = false;
+    let processingInterval = null;
+    let lastProcessedTime = 0;
+    const PROCESSING_INTERVAL = 500; // Process frames every 500ms
+    
+    // Get authentication status from data attribute
+    const isAuthenticated = document.body.getAttribute('data-authenticated') === 'true';
+    console.log("User authentication status:", isAuthenticated);
+    
+    // Function to add cache buster to URL
+    const addCacheBuster = url => {
+        if (!url) return '';
+        const cacheBuster = '?cb=' + new Date().getTime();
+        return url + cacheBuster;
+    };
+    
+    // Function to convert UTC timestamp to Malaysia time (UTC+8)
+    function toMalaysiaTime(timestamp) {
+        // Check if timestamp is in format YYYYMMDD_HHMMSS
+        if (typeof timestamp === 'string' && /^\d{8}_\d{6}$/.test(timestamp)) {
+            // Extract year, month, day, hour, minute, second
+            const year = timestamp.substring(0, 4);
+            const month = timestamp.substring(4, 6);
+            const day = timestamp.substring(6, 8);
+            const hour = timestamp.substring(9, 11);
+            const minute = timestamp.substring(11, 13);
+            const second = timestamp.substring(13, 15);
+            
+            // Create date in UTC
+            const date = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}Z`);
+            
+            // Add 8 hours for Malaysia time (UTC+8)
+            date.setHours(date.getHours() + 8);
+            
+            // Format back to YYYYMMDD_HHMMSS
+            const newYear = date.getUTCFullYear();
+            const newMonth = String(date.getUTCMonth() + 1).padStart(2, '0');
+            const newDay = String(date.getUTCDate()).padStart(2, '0');
+            const newHour = String(date.getUTCHours()).padStart(2, '0');
+            const newMinute = String(date.getUTCMinutes()).padStart(2, '0');
+            const newSecond = String(date.getUTCSeconds()).padStart(2, '0');
+            
+            return `${newYear}${newMonth}${newDay}_${newHour}${newMinute}${newSecond}`;
+        }
+        
+        return timestamp; // Return original if not in expected format
+    }
+    
+    // Show status message
+    function showStatus(message) {
+        const statusElement = document.getElementById('uploadStatus');
+        statusElement.textContent = message;
+        console.log(message);
+    }
+    
+    // Hide the loading spinner
+    function hideSpinner() {
+        // This is a placeholder function since there's no spinner in the HTML
+        console.log("hideSpinner called");
+    }
+    
+    // Display detection results
+    function displayDetectionResults(detections, elementId = 'detectionResults') {
+        const detectionResults = document.getElementById(elementId);
+        detectionResults.innerHTML = '';
+        
+        if (!detections || detections.length === 0) {
+            detectionResults.innerHTML = '<p>No objects detected in the image.</p>';
+            return;
+        }
+        
+        // Count occurrences of each class and track confidence scores
+        const classCounts = {};
+        const classConfidences = {};
+        detections.forEach(detection => {
+            const className = detection.class;
+            const confidence = (detection.confidence * 100).toFixed(1);
+            classCounts[className] = (classCounts[className] || 0) + 1;
+            if (!classConfidences[className]) {
+                classConfidences[className] = [];
+            }
+            classConfidences[className].push(confidence);
+        });
+        
+        // Create a summary list
+        const summary = document.createElement('div');
+        summary.className = 'mb-3';
+        summary.innerHTML = '<strong>Detected Objects:</strong>';
+        
+        const list = document.createElement('ul');
+        list.className = 'list-disc pl-5';
+        
+        for (const className in classCounts) {
+            const item = document.createElement('li');
+            const avgConfidence = (classConfidences[className].reduce((a, b) => parseFloat(a) + parseFloat(b), 0) / classConfidences[className].length).toFixed(1);
+            item.textContent = `${className}: ${classCounts[className]} (${avgConfidence}% confidence)`;
+            list.appendChild(item);
+        }
+        
+        summary.appendChild(list);
+        detectionResults.appendChild(summary);
+    }
+    
+    // Reset save button state
+    function resetSaveButton() {
+        const saveButton = document.getElementById('saveButton');
+        if (saveButton) {
+            saveButton.disabled = false;
+            saveButton.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-green-600');
+            saveButton.classList.add('bg-blue-600');
+            saveButton.innerHTML = '<i class="ri-save-line mr-2"></i>Save Results';
+            
+            // Remove any success/error messages
+            const saveButtonContainer = saveButton.parentElement;
+            const messages = saveButtonContainer.querySelectorAll('span');
+            messages.forEach(message => message.remove());
+        }
+    }
+    
+    // Start the camera
+    async function startCamera() {
+        const cameraPreview = document.getElementById('cameraPreview');
+        const placeholder = document.getElementById('placeholder');
+        const video = document.getElementById('video');
+        const cameraControls = document.getElementById('cameraControls');
+        const resultImageContainer = document.getElementById('resultImageContainer');
+        const processingStatus = document.getElementById('processingStatus');
+        const detectionArea = document.getElementById('detectionArea');
+        
+        try {
+            console.log("Attempting to access camera...");
+            
+            // Reset save button state
+            resetSaveButton();
+            
+            // Check if MediaDevices API is available
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                throw new Error("Camera API not supported in this browser");
+            }
+            
+            // Get user media
+            stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    facingMode: 'environment',
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                } 
+            });
+            
+            console.log("Camera access granted, setting up video stream");
+            
+            // Set video source to stream
+            video.srcObject = stream;
+            
+            // Clear any previous detection results
+            document.getElementById('detectionResults').innerHTML = '';
+            
+            // Reset any stored detection data
+            currentDetections = [];
+            currentImageSize = {};
+            originalImagePath = "";
+            currentResultImageUrl = "";
+            currentExpiryInfo = null;
+            
+            // Show camera preview and controls
+            cameraPreview.classList.remove('hidden');
+            cameraControls.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+            resultImageContainer.classList.add('hidden');
+            
+            // Hide the result image and detection area
+            document.getElementById('resultImage').style.display = 'none';
+            detectionArea.style.display = 'none';
+            
+            // Wait for video to be ready
+            video.onloadedmetadata = () => {
+                console.log("Video metadata loaded, starting real-time processing");
+                startRealTimeProcessing();
+            };
+            
+            showStatus("Camera started. Click 'Capture' to save the current frame.");
+        } catch (error) {
+            console.error("Error starting camera:", error);
+            
+            // Detailed error handling
+            let errorMessage = "";
+            
+            if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+                errorMessage = "Camera access denied. Please allow camera access in your browser settings and reload the page.";
+                showCameraErrorMessage(errorMessage, "permission");
+            } else if (error.name === 'NotFoundError') {
+                errorMessage = "No camera detected. Please connect a camera and try again.";
+                showCameraErrorMessage(errorMessage, "hardware");
+            } else if (error.name === 'NotReadableError' || error.name === 'TrackStartError') {
+                errorMessage = "Camera is in use by another application or not accessible. Please close other apps using the camera.";
+                showCameraErrorMessage(errorMessage, "hardware");
+            } else if (error.name === 'OverconstrainedError') {
+                errorMessage = "Camera cannot meet the requested constraints. Please try a different camera.";
+                showCameraErrorMessage(errorMessage, "hardware");
+            } else if (error.name === 'TypeError' || error.name === 'TypeError') {
+                errorMessage = "Camera access not supported in this browser. Please try a different browser.";
+                showCameraErrorMessage(errorMessage, "browser");
+            } else {
+                errorMessage = `Camera error: ${error.message}`;
+                showCameraErrorMessage(errorMessage, "generic");
+            }
+            
+            showStatus(errorMessage);
+        }
+    }
+    
+    // Stop the camera
+    function stopCamera() {
+        const cameraPreview = document.getElementById('cameraPreview');
+        const placeholder = document.getElementById('placeholder');
+        const cameraControls = document.getElementById('cameraControls');
+        const video = document.getElementById('video');
+        
+        // Stop real-time processing
+        if (processingInterval) {
+            clearInterval(processingInterval);
+            processingInterval = null;
+        }
+        
+        // Stop all video tracks
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+        }
+        
+        // Clear video source
+        video.srcObject = null;
+        
+        // Hide camera elements
+        cameraPreview.classList.add('hidden');
+        cameraControls.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+        
+        // Reset processing status
+        document.getElementById('processingStatus').textContent = "Starting camera...";
+        document.getElementById('liveDetectionResults').innerHTML = "";
+        
+        showStatus("");
+    }
+    
+    // Start real-time frame processing
+    function startRealTimeProcessing() {
+        const processingStatus = document.getElementById('processingStatus');
+        processingStatus.textContent = "Ready for analysis";
+        
+        // Set up interval for processing frames
+        processingInterval = setInterval(() => {
+            // Check if not already processing and video is playing
+            if (!isProcessing && stream && stream.active) {
+                const currentTime = Date.now();
+                // Only process if enough time has passed since last processing
+                if (currentTime - lastProcessedTime > PROCESSING_INTERVAL) {
+                    processRealTimeFrame();
+                }
+            }
+        }, PROCESSING_INTERVAL);
+    }
+    
+    // Process a real-time frame
+    async function processRealTimeFrame() {
+        const video = document.getElementById('video');
+        const processingStatus = document.getElementById('processingStatus');
+        
+        if (!video || !stream || isProcessing) {
+            return;
+        }
+        
+        isProcessing = true;
+        lastProcessedTime = Date.now();
+        processingStatus.textContent = "Analyzing...";
+        
+        try {
+            // Create a canvas element to capture the frame
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            // Draw the video frame to the canvas
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert to base64
+            const imageData = canvas.toDataURL('image/jpeg');
+            
+            // Send image data to server for real-time analysis
+            await processRealTimeImage(imageData);
+            
+        } catch (error) {
+            console.error("Error in real-time processing:", error);
+            processingStatus.textContent = "Error during analysis";
+        } finally {
+            isProcessing = false;
+        }
+    }
+    
+    // Process image for real-time analysis
+    async function processRealTimeImage(imageData) {
+        const processingStatus = document.getElementById('processingStatus');
+        
+        try {
+            // Get base URL from current location
+            const baseUrl = window.location.origin;
+            const predictUrl = `${baseUrl}/predict`;
+            
+            console.log("Sending real-time frame to server at:", predictUrl);
+            
+            // Send image data to server
+            const response = await fetch(predictUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ image: imageData })
+            });
+            
+            console.log("Server response status:", response.status, response.statusText);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("Server error response:", errorText);
+                throw new Error(`Server responded with status: ${response.status} - ${errorText}`);
+            }
+            
+            const data = await response.json();
+            console.log("Prediction successful, received data with detections:", data.detections ? data.detections.length : 0);
+            
+            if (data.success) {
+                // Update real-time detection results
+                processingStatus.textContent = "Analysis complete - detected " + 
+                    (data.detections ? data.detections.length : 0) + " object(s)";
+                
+                // Display real-time detections
+                displayDetectionResults(data.detections, 'liveDetectionResults');
+                
+                // Store current detections and image information for capture
+                currentDetections = data.detections;
+                currentImageSize = data.image_size;
+                originalImagePath = data.original_image;
+                currentResultImageUrl = data.result_image;
+                
+                // Extract timestamp from result_image URL if available
+                if (data.result_image) {
+                    const match = data.result_image.match(/\/static\/results\/([^\/]+)\//);
+                    if (match && match[1]) {
+                        // Convert to Malaysia timezone
+                        currentTimestamp = toMalaysiaTime(match[1]);
+                        console.log("Real-time: Extracted timestamp from result_image:", currentTimestamp);
+                    }
+                }
+            } else {
+                processingStatus.textContent = "Analysis failed";
+                document.getElementById('liveDetectionResults').innerHTML = 
+                    `<div class="text-red-500">Error: ${data.error || 'Unknown error'}</div>`;
+                console.error("Prediction failed with error:", data.error);
+            }
+        } catch (error) {
+            console.error("Error processing real-time image:", error);
+            processingStatus.textContent = "Connection error";
+            document.getElementById('liveDetectionResults').innerHTML = 
+                `<div class="text-red-500">Connection error: ${error.message}</div>`;
+                
+            // Check if this might be an authentication error
+            if (error.message && (error.message.includes("401") || error.message.includes("403"))) {
+                processingStatus.textContent = "Authentication error";
+                document.getElementById('liveDetectionResults').innerHTML = 
+                    `<div class="text-red-500">Authentication error. Please try refreshing the page.</div>`;
+            }
+        }
+    }
+    
+    // Capture frame from camera
+    function captureFrame() {
+        const video = document.getElementById('video');
+        
+        if (!video || !stream) {
+            showStatus("Camera not active");
+            return;
+        }
+        
+        try {
+            // Debug the current state
+            console.log("Capturing frame with current detections:", currentDetections);
+            
+            // Stop real-time processing regardless of current state
+            if (processingInterval) {
+                clearInterval(processingInterval);
+                processingInterval = null;
+            }
+            
+            // If we already have detections from real-time processing, use them
+            if (currentDetections && currentDetections.length > 0) {
+                showStatus("Using current frame analysis...");
+                
+                // Show results section with current detections
+                document.getElementById('detectionArea').style.display = 'block';
+                document.getElementById('result-header').innerText = 'Analysis Results';
+                
+                // Update UI with detection results
+                displayDetectionResults(currentDetections);
+                
+                // Use the result image if we have it
+                if (originalImagePath) {
+                    // Show image and controls
+                    showCapturedImage();
+                    
+                    // Stop the camera since we have captured the image
+                    stopCameraAfterCapture();
+                }
+                
+                showStatus("Results from capture available. Click 'Save Results' to permanently save.");
+            } else {
+                // If no detections, capture the current frame and process it
+                showStatus("Capturing and analyzing current frame...");
+                
+                // Create a canvas to capture the current frame
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                
+                // Draw the video frame to the canvas
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                // Convert to base64
+                const imageData = canvas.toDataURL('image/jpeg');
+                
+                // Process the captured image
+                processImageForCapture(imageData);
+                
+                // Stop the camera since we have captured the image
+                stopCameraAfterCapture();
+            }
+        } catch (error) {
+            console.error("Error capturing frame:", error);
+            showStatus(`Error: ${error.message}`);
+        }
+    }
+    
+    // Function to stop camera after capture
+    function stopCameraAfterCapture() {
+        // Stop all video tracks
+        if (stream) {
+            console.log("Stopping camera after successful capture");
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+        }
+    }
+    
+    // Helper function to show the captured image
+    function showCapturedImage() {
+        // Debug log for the image path
+        console.log("Original image path:", originalImagePath);
+        
+        // Get base URL from current location
+        const baseUrl = window.location.origin;
+        
+        // Use the stored result image URL if available, otherwise try to construct it
+        let resultImageUrl;
+        if (currentResultImageUrl) {
+            resultImageUrl = baseUrl + currentResultImageUrl;
+            console.log("Using server-provided result image URL:", resultImageUrl);
+        } else {
+            // Fallback construction if server URL isn't available
+            console.log("Server result image URL not available, constructing URL manually");
+            
+            // Extract timestamp if needed
+            if (!currentTimestamp) {
+                const pathParts = originalImagePath.split('/');
+                const filename = pathParts[pathParts.length - 1];
+                const match = filename.match(/(?:upload|camera)_(\d{8}_\d{6})/) || [];
+                currentTimestamp = match[1] || '';
+                console.log("Extracted timestamp:", currentTimestamp);
+            }
+            
+            // Get the filename without extension
+            const filenameWithoutExt = originalImagePath.split('/').pop().replace(/\.[^/.]+$/, "");
+            
+            // Construct URL to match server's path structure
+            if (currentTimestamp) {
+                resultImageUrl = `${baseUrl}/static/results/${currentTimestamp}/${filenameWithoutExt}.jpg`;
+            } else {
+                resultImageUrl = `${baseUrl}/static/results/${originalImagePath.split('/').pop()}`;
+            }
+            console.log("Constructed result image URL:", resultImageUrl);
+        }
+        
+        // Show the result image
+        const resultContainer = document.getElementById('resultImageContainer');
+        resultContainer.classList.remove('hidden');
+        
+        console.log("Loading result image from URL:", resultImageUrl);
+        
+        // Use the loadImageWithFallback function for consistent loading behavior
+        loadImageWithFallback(resultImageUrl, resultImageUrl);
+        
+        // Make sure camera preview is hidden
+        document.getElementById('cameraPreview').classList.add('hidden');
+        document.getElementById('cameraControls').classList.add('hidden');
+        document.getElementById('placeholder').classList.add('hidden');
+        
+        // Always show save button (if authenticated) or login prompt (if not)
+        // This ensures users can save even if detections are empty
+        const saveButton = document.getElementById('saveButton');
+        const loginPrompt = document.getElementById('loginPrompt');
+        
+        if (saveButton) {
+            saveButton.style.display = 'block';
+            // Force currentDetections to be an empty array if null
+            if (!currentDetections) {
+                currentDetections = [];
+            }
+        }
+        
+        if (loginPrompt) {
+            loginPrompt.style.display = 'block';
+        }
+    }
+    
+    // Process captured image specifically for the capture button
+    async function processImageForCapture(imageData) {
+        try {
+            showStatus("Processing captured frame...");
+            
+            // Get base URL from current location
+            const baseUrl = window.location.origin;
+            const predictUrl = `${baseUrl}/predict`;
+            
+            // Send image data to server
+            const response = await fetch(predictUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ image: imageData })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`Server responded with status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log("Capture processing response:", data);
+            
+            // Handle the prediction response
+            if (data.success) {
+                // Store current detections and image info
+                currentDetections = data.detections;
+                currentImageSize = data.image_size;
+                originalImagePath = data.original_image;
+                currentResultImageUrl = data.result_image;
+                
+                // Extract timestamp from result_image URL if available
+                if (data.result_image) {
+                    const match = data.result_image.match(/\/static\/results\/([^\/]+)\//);
+                    if (match && match[1]) {
+                        // Convert to Malaysia timezone
+                        currentTimestamp = toMalaysiaTime(match[1]);
+                        console.log("Capture: Extracted timestamp from result_image:", currentTimestamp);
+                    }
+                }
+                
+                // Show results section with detections
+                document.getElementById('detectionArea').style.display = 'block';
+                document.getElementById('result-header').innerText = 'Analysis Results';
+                
+                // Update UI with detection results
+                displayDetectionResults(data.detections);
+                
+                // Show the result image
+                showCapturedImage();
+                
+                // Ensure the camera is stopped
+                stopCameraAfterCapture();
+                
+                // Make sure camera-related elements are hidden
+                document.getElementById('cameraPreview').classList.add('hidden');
+                document.getElementById('cameraControls').classList.add('hidden');
+                
+                showStatus("Results from capture available. Click 'Save Results' to permanently save.");
+            } else {
+                showStatus(`Error processing capture: ${data.error || 'Unknown error'}`);
+            }
+        } catch (error) {
+            console.error("Error processing captured image:", error);
+            showStatus(`Error: ${error.message}`);
+        }
+    }
+    
+    // Process captured image
+    async function processImage(imageData) {
+        try {
+            // Get base URL from current location
+            const baseUrl = window.location.origin;
+            const predictUrl = `${baseUrl}/predict`;
+            
+            // Send image data to server
+            const response = await fetch(predictUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ image: imageData })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`Server responded with status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log("Server response:", data);
+            
+            // Handle the prediction response
+            handlePredictionResponse(data);
+        } catch (error) {
+            console.error("Error processing image:", error);
+            showStatus(`Error: ${error.message}`);
+        }
+    }
+    
+    // Function to save results
+    async function saveResults() {
+        try {
+            // Disable the save button immediately to prevent multiple saves
+            const saveButton = document.getElementById('saveButton');
+            const saveButtonContainer = saveButton.parentElement;
+            
+            // Create and show loading state
+            saveButton.disabled = true;
+            saveButton.classList.add('opacity-50', 'cursor-not-allowed');
+            saveButton.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Saving...';
+
+            // Get the result image
+            const resultImage = document.getElementById('resultImage');
+            const resultImageData = await getBase64FromImage(resultImage);
+            
+            // Prepare data to send to server
+            const data = {
+                detections: currentDetections,
+                image_size: currentImageSize,
+                original_image: originalImagePath,
+                result_image: currentResultImageUrl
+            };
+
+            // Add expiry information if available
+            if (currentExpiryInfo) {
+                data.expiry_days = currentExpiryInfo.expiryDays;
+                data.expiry_date = currentExpiryInfo.expiryDate.toISOString();
+                data.storage_tip = currentExpiryInfo.storageTip;
+                data.dominant_produce = currentExpiryInfo.produce;
+            }
+
+            // Send data to server
+            const response = await fetch('/save-result', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                // Create success message element
+                const successMessage = document.createElement('span');
+                successMessage.className = 'ml-3 text-green-600 text-sm font-medium';
+                successMessage.innerHTML = '<i class="ri-checkbox-circle-line mr-1"></i>Results saved successfully!';
+                
+                // Update button to show saved state
+                saveButton.innerHTML = '<i class="ri-check-line mr-2"></i>Saved';
+                saveButton.classList.add('bg-green-600');
+                saveButton.classList.remove('bg-blue-600');
+                
+                // Add success message next to button
+                saveButtonContainer.appendChild(successMessage);
+                
+                // Remove success message after 3 seconds
+                setTimeout(() => {
+                    successMessage.remove();
+                }, 3000);
+            } else {
+                // If save failed, re-enable the button
+                saveButton.disabled = false;
+                saveButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                saveButton.innerHTML = '<i class="ri-save-line mr-2"></i>Save Results';
+                
+                // Show error message
+                const errorMessage = document.createElement('span');
+                errorMessage.className = 'ml-3 text-red-600 text-sm font-medium';
+                errorMessage.innerHTML = '<i class="ri-error-warning-line mr-1"></i>Error saving results';
+                saveButtonContainer.appendChild(errorMessage);
+                
+                // Remove error message after 3 seconds
+                setTimeout(() => {
+                    errorMessage.remove();
+                }, 3000);
+            }
+        } catch (error) {
+            console.error('Error saving results:', error);
+            // If there's an error, re-enable the button
+            const saveButton = document.getElementById('saveButton');
+            const saveButtonContainer = saveButton.parentElement;
+            
+            saveButton.disabled = false;
+            saveButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            saveButton.innerHTML = '<i class="ri-save-line mr-2"></i>Save Results';
+            
+            // Show error message
+            const errorMessage = document.createElement('span');
+            errorMessage.className = 'ml-3 text-red-600 text-sm font-medium';
+            errorMessage.innerHTML = '<i class="ri-error-warning-line mr-1"></i>Error saving results';
+            saveButtonContainer.appendChild(errorMessage);
+            
+            // Remove error message after 3 seconds
+            setTimeout(() => {
+                errorMessage.remove();
+            }, 3000);
+        }
+    }
+    
+    // Helper function to convert image to base64
+    async function getBase64FromImage(imgElement) {
+        return new Promise((resolve, reject) => {
+            const canvas = document.createElement('canvas');
+            canvas.width = imgElement.naturalWidth;
+            canvas.height = imgElement.naturalHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(imgElement, 0, 0);
+            try {
+                const base64 = canvas.toDataURL('image/jpeg');
+                resolve(base64);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+    
+    // Function to handle regular file upload with YOLO processing
+    async function handleFileUpload(file) {
+        if (!file) {
+            console.log("No file selected");
+            return;
+        }
+        
+        try {
+            console.log(`Starting file upload for: ${file.name} (${file.type}), size: ${file.size} bytes`);
+            
+            // Create form data
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            // Get base URL from current location
+            const baseUrl = window.location.origin;
+            const predictUrl = `${baseUrl}/predict`;
+            console.log(`Using predict URL: ${predictUrl}`);
+            
+            showStatus("Uploading image...");
+            
+            // Send to server
+            console.log("Sending fetch request...");
+            const response = await fetch(predictUrl, {
+                method: 'POST',
+                body: formData
+            });
+            
+            console.log(`Response received: ${response.status} ${response.statusText}`);
+            
+            if (!response.ok) {
+                showStatus(`Error: ${response.status} ${response.statusText}`);
+                return;
+            }
+            
+            showStatus("View Results Below");
+            console.log("Parsing response JSON...");
+            const data = await response.json();
+            console.log(`Server response: ${JSON.stringify(data, null, 2)}`);
+            
+            // Handle the response
+            handlePredictionResponse(data);
+        } catch (error) {
+            console.error(`Error: ${error.message}`);
+            console.error(error.stack || "No stack trace available");
+            showStatus(`Error: ${error.message}`);
+        }
+    }
+    
+    // Function to handle prediction response
+    function handlePredictionResponse(data) {
+        hideSpinner();
+        if (data.success) {
+            document.getElementById('detectionArea').style.display = 'block';
+            document.getElementById('result-header').innerText = 'Analysis Results';
+            
+            // Store the current detections and image size for saving
+            currentDetections = data.detections;
+            currentImageSize = data.image_size;
+            originalImagePath = data.original_image;
+            currentResultImageUrl = data.result_image;
+            
+            // Extract timestamp from result_image URL if available
+            if (data.result_image) {
+                const match = data.result_image.match(/\/static\/results\/([^\/]+)\//);
+                if (match && match[1]) {
+                    // Convert to Malaysia timezone
+                    currentTimestamp = toMalaysiaTime(match[1]);
+                    console.log("Extracted timestamp from result_image:", currentTimestamp);
+                }
+            }
+            
+            // Update UI with detection results
+            displayDetectionResults(data.detections);
+            
+            // Calculate and display expiry information for fresh produce
+            const expiryInfo = calculateExpiry(data.detections);
+            if (expiryInfo) {
+                displayShelfLifeInfo(expiryInfo);
+                // Store for saving later
+                currentExpiryInfo = expiryInfo;
+            }
+            
+            // Show the result image
+            const resultContainer = document.getElementById('resultImageContainer');
+            resultContainer.classList.remove('hidden');
+            
+            console.log("Loading result image from URL:", data.result_image);
+            
+            // Use the loadImageWithFallback function for consistent loading behavior
+            loadImageWithFallback(data.result_image, data.direct_image_url);
+            
+            // Show save button or login prompt for images that have detections
+            if (data.detections && data.detections.length > 0) {
+                const saveButton = document.getElementById('saveButton');
+                const loginPrompt = document.getElementById('loginPrompt');
+                
+                if (saveButton) {
+                    saveButton.style.display = 'block';
+                }
+                
+                if (loginPrompt) {
+                    loginPrompt.style.display = 'block';
+                }
+            } else {
+                const saveButton = document.getElementById('saveButton');
+                const loginPrompt = document.getElementById('loginPrompt');
+                
+                if (saveButton) {
+                    saveButton.style.display = 'none';
+                }
+                
+                if (loginPrompt) {
+                    loginPrompt.style.display = 'none';
+                }
+            }
+        } else {
+            // Error handling
+            console.error("Prediction failed:", data.error);
+            document.getElementById('result-header').innerText = 'Error';
+            document.getElementById('detectionArea').style.display = 'block';
+            document.getElementById('detectionResults').innerHTML = 
+                `<div class="alert alert-danger">Error: ${data.error || 'Unknown error'}</div>`;
+            document.getElementById('resultImageContainer').style.display = 'none';
+            
+            const saveButton = document.getElementById('saveButton');
+            const loginPrompt = document.getElementById('loginPrompt');
+            
+            if (saveButton) {
+                saveButton.style.display = 'none';
+            }
+            
+            if (loginPrompt) {
+                loginPrompt.style.display = 'none';
+            }
+        }
+    }
+    
+    // New function to try loading image with fallback
+    function loadImageWithFallback(primaryUrl, fallbackUrl) {
+        const resultImage = document.getElementById('resultImage');
+        const resultPlaceholder = document.getElementById('resultPlaceholder');
+        
+        // Clear any previous error messages
+        resultPlaceholder.innerHTML = '';
+        
+        // Try primary URL first
+        resultImage.onload = function() {
+            console.log("SUCCESS: Image loaded from primary URL");
+            resultPlaceholder.classList.add('d-none');
+            resultImage.style.display = 'block';
+        };
+        
+        resultImage.onerror = function() {
+            console.error("FAILED: Could not load image from primary URL. Trying fallback URL:", fallbackUrl);
+            
+            // Try both .jpg and .png extensions if the initial load fails
+            const tryAlternateExtension = (url) => {
+                const newUrl = url.replace(/\.(jpg|png)$/, (match, ext) => {
+                    return ext === 'jpg' ? '.png' : '.jpg';
+                });
+                console.log("Trying alternate extension URL:", newUrl);
+                return newUrl;
+            };
+            
+            // Try fallback URL with alternate extension
+            if (fallbackUrl && fallbackUrl !== primaryUrl) {
+                const alternateFallbackUrl = tryAlternateExtension(fallbackUrl);
+                
+                resultImage.onload = function() {
+                    console.log("SUCCESS: Image loaded from fallback URL with alternate extension");
+                    resultPlaceholder.classList.add('d-none');
+                    resultImage.style.display = 'block';
+                };
+                
+                resultImage.onerror = function() {
+                    console.error("FAILED: Could not load image from fallback URL with alternate extension");
+                    displayImageLoadError();
+                };
+                
+                // Try fallback URL with alternate extension and cache buster
+                resultImage.src = addCacheBuster(alternateFallbackUrl);
+            } else {
+                // Try primary URL with alternate extension
+                const alternatePrimaryUrl = tryAlternateExtension(primaryUrl);
+                
+                resultImage.onload = function() {
+                    console.log("SUCCESS: Image loaded from primary URL with alternate extension");
+                    resultPlaceholder.classList.add('d-none');
+                    resultImage.style.display = 'block';
+                };
+                
+                resultImage.onerror = function() {
+                    console.error("FAILED: Could not load image from primary URL with alternate extension");
+                    displayImageLoadError();
+                };
+                
+                // Try primary URL with alternate extension and cache buster
+                resultImage.src = addCacheBuster(alternatePrimaryUrl);
+            }
+        };
+        
+        // Helper function to display error message
+        function displayImageLoadError() {
+            resultPlaceholder.innerHTML = `
+                <div class="alert alert-warning text-center">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Unable to load result image. The analysis was completed successfully, but the image cannot be displayed.</p>
+                    <p class="text-xs text-gray-500 mt-2">Debug info: Primary URL: ${primaryUrl || 'none'}, Fallback URL: ${fallbackUrl || 'none'}</p>
+                </div>`;
+            resultPlaceholder.classList.remove('d-none');
+            resultImage.style.display = 'none';
+        }
+        
+        // Try primary URL with cache buster
+        resultImage.src = addCacheBuster(primaryUrl);
+    }
+    
+    // Helper function to show camera errors with guidance
+    function showCameraErrorMessage(message, type) {
+        const placeholder = document.getElementById('placeholder');
+        
+        // Update placeholder with error message and help instructions
+        placeholder.innerHTML = `
+            <i class="ri-error-warning-line text-4xl text-red-500"></i>
+            <p class="text-red-600 font-medium mb-2">${message}</p>
+            <div class="text-gray-600 mb-4 text-sm">
+                ${getHelpTextForErrorType(type)}
+            </div>
+            <button onclick="location.reload()" class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+                <i class="ri-refresh-line mr-1"></i> Try Again
+            </button>
+        `;
+    }
+    
+    // Get help text based on error type
+    function getHelpTextForErrorType(type) {
+        switch(type) {
+            case "permission":
+                return `
+                    <p class="mb-2">To allow camera access:</p>
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>Look for the camera icon in your browser's address bar</li>
+                        <li>Click on it and select "Allow" for camera access</li>
+                        <li>Reload the page after changing permissions</li>
+                    </ol>
+                `;
+            case "hardware":
+                return `
+                    <p class="mb-2">Camera troubleshooting steps:</p>
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>Make sure your camera is properly connected</li>
+                        <li>Check if other applications are using your camera</li>
+                        <li>Try restarting your device if problems persist</li>
+                    </ol>
+                `;
+            case "browser":
+                return `
+                    <p class="mb-2">Recommended browsers:</p>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Google Chrome (latest version)</li>
+                        <li>Firefox (latest version)</li>
+                        <li>Edge (latest version)</li>
+                    </ul>
+                `;
+            default:
+                return `
+                    <p>If the problem persists:</p>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Try uploading an image instead</li>
+                        <li>Reload the page and try again</li>
+                        <li>Try using a different device or browser</li>
+                    </ul>
+                `;
+        }
+    }
+    
+    // Function to check if the produce is fresh and estimate expiry
+    function calculateExpiry(detections) {
+        // Skip if no detections
+        if (!detections || detections.length === 0) {
+            return null;
+        }
+        
+        // Count occurrences of each class
+        const classCounts = {};
+        let dominantProduce = null;
+        let highestCount = 0;
+        
+        detections.forEach(detection => {
+            const className = detection.class || '';
+            const isFresh = className.toLowerCase().includes('fresh');
+            
+            if (!isFresh) return; // Skip rotten produce
+            
+            if (!classCounts[className]) {
+                classCounts[className] = 0;
+            }
+            classCounts[className]++;
+            
+            if (classCounts[className] > highestCount) {
+                highestCount = classCounts[className];
+                dominantProduce = className;
+            }
+        });
+        
+        // Return null if no fresh produce
+        if (!dominantProduce) return null;
+        
+        // Get shelf life information based on produce type
+        const produceInfo = getProduceShelfLife(dominantProduce);
+        
+        // Return result
+        return {
+            produce: dominantProduce,
+            expiryDays: produceInfo.days,
+            expiryDate: new Date(Date.now() + (produceInfo.days * 24 * 60 * 60 * 1000)),
+            storageTip: produceInfo.tip
+        };
+    }
+    
+    // Function to get shelf life information for different produce
+    function getProduceShelfLife(produceName) {
+        const cleanName = produceName.toLowerCase().replace('fresh', '').trim();
+        
+        // Default values if produce not found
+        const defaultInfo = {
+            days: 7,
+            tip: "For best quality, keep refrigerated."
+        };
+        
+        // Shelf life data for each produce type (in days)
+        const produceData = {
+            "apple": {
+                days: 42, // 6 weeks
+                tip: "Refrigerated: 4–6 weeks in the crisper drawer. Room Temperature: 5–7 days."
+            },
+            "banana": {
+                days: 7,
+                tip: "Room Temperature: Up to 7 days in a cool, dark place. Refrigeration darkens skin but keeps fruit fresh longer."
+            },
+            "carrot": {
+                days: 28, // 4 weeks
+                tip: "Refrigerated: 3–5 weeks in a plastic bag in the crisper drawer."
+            },
+            "cucumber": {
+                days: 10, // 1-2 weeks
+                tip: "Refrigerated: 7–14 days, wrapped in paper towels and stored in a plastic bag."
+            },
+            "mango": {
+                days: 7,
+                tip: "Ripe (Refrigerated): 5–7 days. Ripe (Room Temperature): 2–5 days."
+            },
+            "orange": {
+                days: 28, // 4 weeks
+                tip: "Refrigerated: 3–4 weeks. Room Temperature: 10–14 days."
+            },
+            "pepper": {
+                days: 10, // 10-14 days
+                tip: "Refrigerated: 5–14 days, depending on variety."
+            },
+            "potato": {
+                days: 75, // 2-3 months
+                tip: "Room Temperature: 2–3 months in a cool, dark, well-ventilated place. Refrigeration not recommended."
+            }
+        };
+        
+        return produceData[cleanName] || defaultInfo;
+    }
+    
+    // Display shelf life information
+    function displayShelfLifeInfo(expiryInfo) {
+        if (!expiryInfo) return;
+        
+        const expiryDate = expiryInfo.expiryDate;
+        const formattedDate = expiryDate.toLocaleDateString(undefined, { 
+            month: 'long', 
+            day: 'numeric',
+            year: 'numeric'
+        });
+        
+        // Create the expiry info element
+        const expiryElement = document.createElement('div');
+        expiryElement.className = 'mt-4 p-3 bg-blue-50 rounded-lg';
+        expiryElement.innerHTML = `
+            <div class="text-center">
+                <div class="flex items-center justify-center gap-2 mb-2">
+                    <i class="ri-calendar-check-line text-blue-600 text-lg"></i>
+                    <p class="font-medium text-blue-800">Fresh until: ${formattedDate}</p>
+                </div>
+                <p class="text-gray-600 text-sm">${expiryInfo.storageTip}</p>
+            </div>
+        `;
+        
+        // Add to detection area
+        const detectionArea = document.getElementById('detectionArea');
+        
+        // Check if we already have an expiry info element
+        const existingExpiry = detectionArea.querySelector('.bg-blue-50');
+        if (existingExpiry) {
+            existingExpiry.remove();
+        }
+        
+        detectionArea.appendChild(expiryElement);
+    }
+    
+    // Set up event listeners when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("Page loaded, setting up event listeners");
+        
+        // Check browser support for camera
+        const hasCameraSupport = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+        console.log("Browser camera support:", hasCameraSupport);
+        
+        const imageUpload = document.getElementById('imageUpload');
+        const saveButton = document.getElementById('saveButton');
+        const startCameraBtn = document.getElementById('startCameraBtn');
+        const stopCameraBtn = document.getElementById('stopCameraBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        
+        if (!hasCameraSupport) {
+            // Update start camera button to show it's not available
+            if (startCameraBtn) {
+                startCameraBtn.classList.add('bg-gray-400');
+                startCameraBtn.classList.remove('bg-blue-600');
+                startCameraBtn.disabled = true;
+                startCameraBtn.title = "Camera not supported in this browser";
+                startCameraBtn.innerHTML = '<i class="ri-camera-off-line mr-1"></i>Not Available';
+            }
+        }
+        
+        // Regular file input change event
+        imageUpload.addEventListener('change', (event) => {
+            console.log("File input changed");
+            if (event.target.files.length > 0) {
+                // Reset save button state
+                resetSaveButton();
+                
+                // Stop camera if it's running
+                if (stream) {
+                    stopCamera();
+                }
+                handleFileUpload(event.target.files[0]);
+            } else {
+                console.log("No file selected in event");
+            }
+        });
+        
+        // Save button click event
+        if (saveButton) {
+            saveButton.addEventListener('click', () => {
+                console.log("Save button clicked");
+                saveResults();
+            });
+        }
+        
+        // Camera control events - only add if camera is supported
+        if (hasCameraSupport) {
+            // Camera control events
+            if (startCameraBtn) {
+                startCameraBtn.addEventListener('click', () => {
+                    console.log("Start camera button clicked");
+                    startCamera();
+                });
+            }
+            
+            if (stopCameraBtn) {
+                stopCameraBtn.addEventListener('click', () => {
+                    console.log("Stop camera button clicked");
+                    stopCamera();
+                });
+            }
+            
+            if (captureBtn) {
+                captureBtn.addEventListener('click', () => {
+                    console.log("Capture button clicked");
+                    captureFrame();
+                });
+            }
+        }
+        
+        console.log("Event listeners set up successfully");
+    });
+
+    // Image modal functions
+    function openImageModal(imageSrc, title) {
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('imageModalTitle');
+        
+        modalImage.src = imageSrc;
+        modalTitle.textContent = title || 'Image Preview';
+        modal.classList.remove('hidden');
+        
+        // Add escape key listener
+        document.addEventListener('keydown', handleImageModalEscapeKey);
+        
+        // Add click outside to close
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeImageModal();
+            }
+        });
+    }
+
+    function closeImageModal() {
+        const modal = document.getElementById('imageModal');
+        modal.classList.add('hidden');
+        document.removeEventListener('keydown', handleImageModalEscapeKey);
+    }
+
+    function handleImageModalEscapeKey(e) {
+        if (e.key === 'Escape') {
+            closeImageModal();
+        }
+    }
+</script>
+{% endblock %}

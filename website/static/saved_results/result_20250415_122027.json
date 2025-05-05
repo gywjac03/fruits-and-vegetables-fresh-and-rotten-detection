@@ -1,0 +1,91 @@
+{
+    "user_id": 1,
+    "timestamp": "20250415_122027",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 292.94,
+                "x2": 554.29,
+                "y1": 260.49,
+                "y2": 427.23
+            },
+            "class": "fresh banana",
+            "confidence": 72.05
+        },
+        {
+            "bbox": {
+                "x1": 226.52,
+                "x2": 509.73,
+                "y1": 389.85,
+                "y2": 544.92
+            },
+            "class": "fresh banana",
+            "confidence": 60.04
+        },
+        {
+            "bbox": {
+                "x1": 394.12,
+                "x2": 609.89,
+                "y1": 381.65,
+                "y2": 553.73
+            },
+            "class": "fresh banana",
+            "confidence": 58.12
+        },
+        {
+            "bbox": {
+                "x1": 76.13,
+                "x2": 239.29,
+                "y1": 310.52,
+                "y2": 518.74
+            },
+            "class": "fresh banana",
+            "confidence": 52.22
+        },
+        {
+            "bbox": {
+                "x1": 222.07,
+                "x2": 502.25,
+                "y1": 161.67,
+                "y2": 392.73
+            },
+            "class": "fresh banana",
+            "confidence": 45.16
+        },
+        {
+            "bbox": {
+                "x1": 148.6,
+                "x2": 303.53,
+                "y1": 371.81,
+                "y2": 531.23
+            },
+            "class": "fresh banana",
+            "confidence": 42.46
+        },
+        {
+            "bbox": {
+                "x1": 168.39,
+                "x2": 451.14,
+                "y1": 108.6,
+                "y2": 343.29
+            },
+            "class": "fresh banana",
+            "confidence": 40.4
+        },
+        {
+            "bbox": {
+                "x1": 51.79,
+                "x2": 186.64,
+                "y1": 220.97,
+                "y2": 500.73
+            },
+            "class": "fresh banana",
+            "confidence": 26.44
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250415_122027_upload_20250415_122025_freshBanana-19-_jpg.rf.0323a61b95e23c9e4d8df0ff726b6418.jpg"
+}

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#4ade80',primary:'#16a34a',secondary:'#f97316'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+    </style>
+
+    <title>{% block title %}Home{% endblock %}</title>
+  </head>
+  <body class="bg-gray-50 min-h-screen" data-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}">
+    <!-- Header Section -->
+    <header class="w-full bg-white shadow-sm sticky top-0 z-50 pt-2">
+      <div class="container mx-auto px-4 py-2 flex items-center justify-between">
+        <div class="flex items-center">
+          <span class="text-3xl font-['Pacifico'] text-green-600">FreshScan</span>
+        </div>
+        <nav class="hidden md:flex items-center space-x-8">
+          <button onclick="window.location.href='/'" class="h-12 px-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 flex items-center space-x-2 text-gray-700 hover:text-green-600" id="nav-home">
+            <span class="font-medium">Home</span>
+          </button>
+          <button onclick="window.location.href='/how-it-works'" class="h-12 px-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 flex items-center space-x-2 text-gray-700 hover:text-green-600">
+            <span class="font-medium">How It Works</span>
+          </button>
+          <button onclick="window.location.href='/about'" class="h-12 px-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 flex items-center space-x-2 text-gray-700 hover:text-green-600">
+            <span class="font-medium">About</span>
+          </button>
+          {% if user.is_authenticated %}
+          <button onclick="window.location.href='/my-scans'" class="h-12 px-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 flex items-center space-x-2 text-gray-700 hover:text-green-600 logged-in-only" id="nav-my-scans">
+            <span class="font-medium">My Scans</span>
+          </button>
+          {% endif %}
+        </nav>
+        <div class="flex items-center space-x-4">
+          <a href="{{ url_for('views.scan') }}" class="bg-green-600 text-white px-6 py-2 !rounded-button font-medium flex items-center whitespace-nowrap">
+            <div class="w-5 h-5 flex items-center justify-center mr-2">
+              <i class="ri-camera-3-line"></i>
+            </div>
+            Scan Now
+          </a>
+          {% if not user.is_authenticated %}
+          <div class="logged-out-only flex items-center space-x-3">
+            <a href="/login" id="login-btn" class="text-gray-700 hover:text-green-600 font-medium whitespace-nowrap">Log In</a>
+            <a href="/register" id="signup-btn" class="border border-green-600 text-green-600 px-4 py-2 !rounded-button font-medium whitespace-nowrap">Register</a>
+          </div>
+          {% else %}
+          <div class="logged-in-only">
+            <div class="relative" id="user-menu">
+              <button class="flex items-center space-x-2">
+                <div class="w-8 h-8 !rounded-full flex items-center justify-center overflow-hidden bg-green-100">
+                  {% if user.profile_pic and user.profile_pic != 'default.jpg' %}
+                    <img src="{{ url_for('static', filename='uploads/profile_pics/' + user.profile_pic) }}" 
+                         alt="{{ user.userName }}" class="w-full h-full object-cover">
+                  {% else %}
+                    <div class="w-8 h-8 bg-green-600 text-white !rounded-full flex items-center justify-center">
+                      <i class="ri-user-line"></i>
+                    </div>
+                  {% endif %}
+                </div>
+                <span class="text-gray-700 font-medium hidden md:inline">{{ user.userName }}</span>
+                <div class="w-5 h-5 flex items-center justify-center">
+                  <i class="ri-arrow-down-s-line"></i>
+                </div>
+              </button>
+              <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white !rounded-lg shadow-lg py-2 hidden">
+                <a href="{{ url_for('views.profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+                <a href="/logout" id="logout-btn" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Log Out</a>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %} 
+    {% if messages %} 
+    {% for category, message in messages %} 
+    {% if category =='error' %} 
+      <div class="alert alert-danger alter-dismissable fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% else %}
+      <div class="alert alert-success alter-dismissable fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    // User dropdown toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const userMenu = document.getElementById('user-menu');
+      const userDropdown = document.getElementById('user-dropdown');
+      
+      if (userMenu && userDropdown) {
+        userMenu.addEventListener('click', () => {
+          userDropdown.classList.toggle('hidden');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+          if (!userMenu.contains(e.target) && !userDropdown.classList.contains('hidden')) {
+            userDropdown.classList.add('hidden');
+          }
+        });
+      }
+    });
+  </script>
+  </body>
+</html>

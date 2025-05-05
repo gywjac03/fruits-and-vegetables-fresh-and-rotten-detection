@@ -1,0 +1,31 @@
+{
+    "user_id": 1,
+    "timestamp": "20250416_165354",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 319.33,
+                "x2": 601.98,
+                "y1": 76.83,
+                "y2": 627.92
+            },
+            "class": "rotten carrot",
+            "confidence": 65.28
+        },
+        {
+            "bbox": {
+                "x1": 52.97,
+                "x2": 298.5,
+                "y1": 101.45,
+                "y2": 617.84
+            },
+            "class": "fresh carrot",
+            "confidence": 44.94
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250416_165354_upload_20250416_165347_rottenCarrot-315-_jpg.rf.01eb4f500a647ed26d7282a1d11e372f.jpg"
+}

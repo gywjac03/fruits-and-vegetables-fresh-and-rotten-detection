@@ -1,0 +1,24 @@
+{
+    "user_id": 1,
+    "timestamp": "20250430_175706",
+    "detections": [
+        {
+            "box": {
+                "x1": 37.56980514526367,
+                "x2": 373.48907470703125,
+                "y1": 19.45720863342285,
+                "y2": 327.3642272949219
+            },
+            "class": "rotten orange",
+            "confidence": 0.9459763765335083
+        }
+    ],
+    "image_size": {
+        "height": 350,
+        "width": 376
+    },
+    "image_path": "website/static/saved_results/saved_20250430_175706_upload_20250430_175653_vertical_flip_Screen Shot 2018-06-12 at 11.46.26 PM.png",
+    "dominant_produce": "rotten orange",
+    "expiry_date": null,
+    "storage_recommendation": null
+}

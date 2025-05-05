@@ -1,0 +1,94 @@
+{
+    "user_id": 1,
+    "timestamp": "20250421_171541",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 313.33,
+                "x2": 640,
+                "y1": 238.72,
+                "y2": 525.14
+            },
+            "class": "fresh cucumber",
+            "confidence": 81.96
+        },
+        {
+            "bbox": {
+                "x1": 491.16,
+                "x2": 639.78,
+                "y1": 452.5,
+                "y2": 640
+            },
+            "class": "fresh cucumber",
+            "confidence": 81.79
+        },
+        {
+            "bbox": {
+                "x1": 109.79,
+                "x2": 305.59,
+                "y1": 206.62,
+                "y2": 383.64
+            },
+            "class": "fresh cucumber",
+            "confidence": 77.06
+        },
+        {
+            "bbox": {
+                "x1": 177.98,
+                "x2": 352.31,
+                "y1": 23.61,
+                "y2": 237.05
+            },
+            "class": "fresh cucumber",
+            "confidence": 76.04
+        },
+        {
+            "bbox": {
+                "x1": 313.05,
+                "x2": 591.57,
+                "y1": 40.48,
+                "y2": 201.75
+            },
+            "class": "fresh cucumber",
+            "confidence": 73.95
+        },
+        {
+            "bbox": {
+                "x1": 202.42,
+                "x2": 420.89,
+                "y1": 331.33,
+                "y2": 485.11
+            },
+            "class": "fresh cucumber",
+            "confidence": 64.06
+        },
+        {
+            "bbox": {
+                "x1": 37.02,
+                "x2": 218.55,
+                "y1": 96.22,
+                "y2": 275.75
+            },
+            "class": "fresh cucumber",
+            "confidence": 63.91
+        },
+        {
+            "bbox": {
+                "x1": 358.04,
+                "x2": 528.99,
+                "y1": 429.09,
+                "y2": 622.35
+            },
+            "class": "fresh cucumber",
+            "confidence": 61.47
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250421_171541_upload_20250421_171540_freshCucumber-309-_jpg.rf.72b6ba8b2923aa70d79fdd788989e988.jpg",
+    "dominant_produce": "fresh cucumber",
+    "expiry_date": "2025-05-01T17:15:40.685000+08:00",
+    "storage_recommendation": "Refrigerated: 7\u201314 days, wrapped in paper towels and stored in a plastic bag."
+}

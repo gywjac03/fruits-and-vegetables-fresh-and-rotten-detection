@@ -1,0 +1,34 @@
+{
+    "user_id": 1,
+    "timestamp": "20250421_171552",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 189.45,
+                "x2": 441.17,
+                "y1": 542.89,
+                "y2": 639.99
+            },
+            "class": "fresh apple",
+            "confidence": 56.66
+        },
+        {
+            "bbox": {
+                "x1": 66.44,
+                "x2": 359.42,
+                "y1": 0,
+                "y2": 152.41
+            },
+            "class": "fresh apple",
+            "confidence": 29.06
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250421_171552_upload_20250421_171552_freshBanana-425-_jpg.rf.70621e6e3bed99ee2d503d0fa323f29d.jpg",
+    "dominant_produce": "fresh apple",
+    "expiry_date": "2025-06-02T17:15:52.133000+08:00",
+    "storage_recommendation": "Refrigerated: 4\u20136 weeks in the crisper drawer. Room Temperature: 5\u20137 days."
+}

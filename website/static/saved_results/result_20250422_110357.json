@@ -1,0 +1,34 @@
+{
+    "user_id": 1,
+    "timestamp": "20250422_110357",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 107.08,
+                "x2": 494.18,
+                "y1": 109.75,
+                "y2": 468.59
+            },
+            "class": "rotten potato",
+            "confidence": 87.37
+        },
+        {
+            "bbox": {
+                "x1": 409.21,
+                "x2": 559.68,
+                "y1": 378.92,
+                "y2": 584.68
+            },
+            "class": "fresh potato",
+            "confidence": 33.06
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250422_110357_upload_20250422_110351_rottenPotato-330-_jpg.rf.6d0439b044a218409886d703ca011249.jpg",
+    "dominant_produce": "fresh potato",
+    "expiry_date": "2025-07-06T11:03:51.989000+08:00",
+    "storage_recommendation": "Room Temperature: 2\u20133 months in a cool, dark, well-ventilated place. Refrigeration not recommended."
+}

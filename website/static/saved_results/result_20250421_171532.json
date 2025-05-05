@@ -1,0 +1,64 @@
+{
+    "user_id": 1,
+    "timestamp": "20250421_171532",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 426.07,
+                "x2": 640,
+                "y1": 0.13,
+                "y2": 305.96
+            },
+            "class": "fresh bellpepper",
+            "confidence": 87.23
+        },
+        {
+            "bbox": {
+                "x1": 133.16,
+                "x2": 376.02,
+                "y1": 62.4,
+                "y2": 335.69
+            },
+            "class": "fresh bellpepper",
+            "confidence": 80.96
+        },
+        {
+            "bbox": {
+                "x1": 50.34,
+                "x2": 254.78,
+                "y1": 333.01,
+                "y2": 609.42
+            },
+            "class": "fresh bellpepper",
+            "confidence": 78.07
+        },
+        {
+            "bbox": {
+                "x1": 261.26,
+                "x2": 514.1,
+                "y1": 207.59,
+                "y2": 449.92
+            },
+            "class": "fresh bellpepper",
+            "confidence": 64.54
+        },
+        {
+            "bbox": {
+                "x1": 22.54,
+                "x2": 285.25,
+                "y1": 0,
+                "y2": 192.7
+            },
+            "class": "fresh bellpepper",
+            "confidence": 30.48
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250421_171532_upload_20250421_171531_freshPepper-308-_jpg.rf.3b372e272df39682226923b13599b53e.jpg",
+    "dominant_produce": "fresh bellpepper",
+    "expiry_date": "2025-04-28T17:15:31.579000+08:00",
+    "storage_recommendation": "For best quality, keep refrigerated."
+}

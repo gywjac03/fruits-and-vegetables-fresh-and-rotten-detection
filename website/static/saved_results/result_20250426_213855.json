@@ -1,0 +1,84 @@
+{
+    "user_id": 1,
+    "timestamp": "20250426_213855",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 265.44,
+                "x2": 454.31,
+                "y1": 105.85,
+                "y2": 432.72
+            },
+            "class": "rotten potato",
+            "confidence": 68.48
+        },
+        {
+            "bbox": {
+                "x1": 76.4,
+                "x2": 261.12,
+                "y1": 98.27,
+                "y2": 438.77
+            },
+            "class": "rotten potato",
+            "confidence": 62.78
+        },
+        {
+            "bbox": {
+                "x1": 229.53,
+                "x2": 352.17,
+                "y1": 427.09,
+                "y2": 591.51
+            },
+            "class": "rotten potato",
+            "confidence": 30.16
+        },
+        {
+            "bbox": {
+                "x1": 0,
+                "x2": 54.97,
+                "y1": 175,
+                "y2": 329.72
+            },
+            "class": "rotten potato",
+            "confidence": 28.84
+        },
+        {
+            "bbox": {
+                "x1": 0,
+                "x2": 49.17,
+                "y1": 173.59,
+                "y2": 328.27
+            },
+            "class": "fresh potato",
+            "confidence": 28.21
+        },
+        {
+            "bbox": {
+                "x1": 0,
+                "x2": 79.06,
+                "y1": 493.55,
+                "y2": 594.12
+            },
+            "class": "rotten potato",
+            "confidence": 28.08
+        },
+        {
+            "bbox": {
+                "x1": 15.87,
+                "x2": 172.31,
+                "y1": 340.9,
+                "y2": 521.22
+            },
+            "class": "rotten potato",
+            "confidence": 25.81
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250426_213855_upload_20250426_213853_rottenPotato-64-_jpg.rf.2deae61c0f8f867113591093f9e7d1a4.jpg",
+    "dominant_produce": "fresh potato",
+    "expiry_date": "2025-07-10T21:38:53.788000+08:00",
+    "storage_recommendation": "Room Temperature: 2\u20133 months in a cool, dark, well-ventilated place. Refrigeration not recommended."
+}

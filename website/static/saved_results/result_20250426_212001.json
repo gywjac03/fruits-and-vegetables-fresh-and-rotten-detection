@@ -1,0 +1,94 @@
+{
+    "user_id": 1,
+    "timestamp": "20250426_212001",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 377.38,
+                "x2": 492.72,
+                "y1": 105.3,
+                "y2": 290.97
+            },
+            "class": "rotten potato",
+            "confidence": 73.36
+        },
+        {
+            "bbox": {
+                "x1": 226.91,
+                "x2": 348.19,
+                "y1": 256.91,
+                "y2": 443.85
+            },
+            "class": "rotten potato",
+            "confidence": 66.64
+        },
+        {
+            "bbox": {
+                "x1": 235.7,
+                "x2": 378.88,
+                "y1": 44.04,
+                "y2": 212.72
+            },
+            "class": "rotten potato",
+            "confidence": 64.28
+        },
+        {
+            "bbox": {
+                "x1": 312.62,
+                "x2": 423.76,
+                "y1": 254.75,
+                "y2": 430.32
+            },
+            "class": "rotten potato",
+            "confidence": 52.34
+        },
+        {
+            "bbox": {
+                "x1": 163.32,
+                "x2": 302.55,
+                "y1": 168.66,
+                "y2": 317.6
+            },
+            "class": "rotten potato",
+            "confidence": 47.04
+        },
+        {
+            "bbox": {
+                "x1": 107.32,
+                "x2": 237.57,
+                "y1": 263.17,
+                "y2": 437.41
+            },
+            "class": "rotten potato",
+            "confidence": 37
+        },
+        {
+            "bbox": {
+                "x1": 445.88,
+                "x2": 539.66,
+                "y1": 295.37,
+                "y2": 431.2
+            },
+            "class": "rotten potato",
+            "confidence": 36.41
+        },
+        {
+            "bbox": {
+                "x1": 380.53,
+                "x2": 490.82,
+                "y1": 112.01,
+                "y2": 279.64
+            },
+            "class": "fresh potato",
+            "confidence": 26.76
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250426_212001_upload_20250426_211953_rottenPotato-76-_jpg.rf.01792fd25561c35ee088221e3605e1be.jpg",
+    "dominant_produce": "fresh potato",
+    "expiry_date": "2025-07-10T21:19:53.614000+08:00",
+    "storage_recommendation": "Room Temperature: 2\u20133 months in a cool, dark, well-ventilated place. Refrigeration not recommended."
+}

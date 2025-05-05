@@ -1,0 +1,575 @@
+{% extends "base.html" %}
+{% block title %}My Saved Scans{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-center mb-8">My Saved Scans</h1>
+    
+    {% if scan_results|length > 0 %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for result in scan_results %}
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="relative h-48 bg-gray-100 flex items-center justify-center">
+                {% if result.result_image_path %}
+                <img src="{{ result.result_image_path }}" class="w-full h-full object-cover cursor-pointer" alt="Scan result" 
+                     onerror="this.onerror=null; this.src='{{ result.image_path }}'; console.log('Failed to load result image: ' + this.src);"
+                     onclick="openImageModal('{{ result.result_image_path }}', '{{ result.title }}')">
+                {% elif result.image_path %}
+                <img src="{{ result.image_path }}" class="w-full h-full object-cover cursor-pointer" alt="Original image"
+                     onerror="this.onerror=null; this.src='/static/uploads/default.jpg'; console.log('Failed to load original image: ' + this.src);"
+                     onclick="openImageModal('{{ result.image_path }}', '{{ result.title }}')">
+                {% else %}
+                <div class="text-gray-400">
+                    <i class="ri-image-line text-5xl"></i>
+                    <p class="text-sm mt-2">No image available</p>
+                </div>
+                {% endif %}
+                <div class="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded text-xs">
+                    {{ result.detection_count }} detected
+                </div>
+            </div>
+            <div class="p-4">
+                <div class="flex justify-between items-start mb-2">
+                    <div class="flex-1 pr-4">
+                        <div class="flex items-center">
+                            <h3 class="text-lg font-semibold truncate scan-title" data-scan-id="{{ result.id }}">{{ result.title }}</h3>
+                            <button class="edit-title-btn text-gray-400 hover:text-blue-600 ml-2 flex items-center justify-center"
+                                    data-scan-id="{{ result.id }}" 
+                                    data-scan-title="{{ result.title }}"
+                                    title="Edit title">
+                                <i class="ri-edit-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-700 text-sm mb-3">{{ result.summary }}</p>
+                
+                {% if result.expected_expiry %}
+                <div class="mt-2 mb-3 p-3 bg-blue-50 rounded-md">
+                    <div class="flex items-center justify-between gap-2 mb-2">
+                        <div class="flex items-center gap-2">
+                            <i class="ri-calendar-check-line text-blue-600 text-lg"></i>
+                            {% if result.is_rotten %}
+                            <p class="font-medium text-red-800">Status: Rotten</p>
+                            {% else %}
+                            <p class="font-medium text-blue-800">Fresh until: {{ result.expected_expiry.strftime('%B %d, %Y') }}</p>
+                            {% endif %}
+                        </div>
+                        {% if not result.is_rotten %}
+                        <button class="mark-rotten-btn text-xs px-2 py-1 rounded-md bg-red-500 text-white"
+                                data-scan-id="{{ result.id }}">
+                            Mark as Rotten
+                        </button>
+                        {% endif %}
+                    </div>
+                    
+                    {% if result.storage_recommendation and not result.is_rotten %}
+                    <p class="text-xs text-gray-600">{{ result.storage_recommendation }}</p>
+                    {% endif %}
+                    
+                    {% if result.is_rotten and result.marked_rotten_date %}
+                    <p class="text-xs text-gray-600 mt-2">
+                        <i class="ri-time-line mr-1"></i>
+                        Marked as rotten on {{ result.marked_rotten_date.strftime('%B %d, %Y at %I:%M %p') }}
+                    </p>
+                    {% endif %}
+                    
+                    <!-- Freshness indicator -->
+                    {% if not result.is_rotten %}
+                        {% set days_left = (result.expected_expiry - now).days %}
+                        {% if days_left >= 0 %}
+                            <div class="mt-2">
+                                <div class="flex justify-between text-xs text-gray-500 mb-1">
+                                    <span>Today</span>
+                                    <span>Expiry</span>
+                                </div>
+                                <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                    {% set total_shelf_life = (result.expected_expiry - result.created_date).days %}
+                                    {% set days_passed = total_shelf_life - days_left %}
+                                    {% set percent = (days_passed / total_shelf_life * 100) if total_shelf_life > 0 else 0 %}
+                                    {% set color = "bg-green-500" if days_left > 7 else "bg-yellow-500" if days_left > 2 else "bg-red-500" %}
+                                    <div class="{{ color }} freshness-indicator" data-percent="{{ percent }}"></div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1 text-right">{{ days_left }} days left ({{ total_shelf_life }} day shelf life)</p>
+                            </div>
+                        {% else %}
+                            <div class="mt-2 text-xs text-red-500">
+                                <i class="ri-error-warning-line mr-1"></i>
+                                <span>Expiry date has passed ({{ -days_left }} days ago)</span>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                <div class="flex justify-between items-center mt-4">
+                    <div class="text-sm text-gray-500">
+                        <p>{{ result.created_date.strftime('%b %d, %Y at %I:%M %p') }}</p>
+                    </div>
+                    <button class="text-red-500 hover:text-red-700 text-sm flex items-center delete-scan px-3 py-1 rounded-md border border-red-200 hover:bg-red-50" 
+                            data-scan-id="{{ result.id }}">
+                        <i class="ri-delete-bin-line mr-1"></i>
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-12">
+        <div class="text-5xl text-gray-300 mb-4">
+            <i class="ri-image-line"></i>
+        </div>
+        <h2 class="text-xl font-medium text-gray-600 mb-2">No saved scans yet</h2>
+        <p class="text-gray-500 mb-6">Your saved scan results will appear here.</p>
+        <a href="/scan" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 inline-flex items-center">
+            <i class="ri-camera-line mr-2"></i> Go to Scan
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Image Modal -->
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center hidden">
+    <div class="relative max-w-5xl max-h-full mx-4">
+        <div class="bg-white rounded-lg overflow-hidden shadow-xl">
+            <div class="p-4 bg-gray-100 flex justify-between items-center">
+                <h3 id="modalTitle" class="text-lg font-semibold text-gray-800"></h3>
+                <button onclick="closeImageModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="ri-close-line text-xl"></i>
+                </button>
+            </div>
+            <div class="p-4 flex items-center justify-center bg-gray-800">
+                <img id="modalImage" src="" alt="Full size image" class="max-w-full max-h-[70vh] object-contain">
+            </div>
+            <div class="p-3 bg-gray-100 flex justify-end">
+                <button onclick="closeImageModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Title Modal -->
+<div id="editTitleModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg overflow-hidden shadow-xl w-full max-w-md mx-4">
+        <div class="p-4 bg-gray-100 flex justify-between items-center">
+            <h3 class="text-lg font-semibold text-gray-800">Edit Scan Title</h3>
+            <button onclick="closeEditTitleModal()" class="text-gray-500 hover:text-gray-700">
+                <i class="ri-close-line text-xl"></i>
+            </button>
+        </div>
+        <div class="p-6">
+            <form id="editTitleForm" onsubmit="saveTitleEdit(event)">
+                <input type="hidden" id="editScanId" value="">
+                <div class="mb-4">
+                    <label for="editTitleInput" class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                    <input type="text" id="editTitleInput" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeEditTitleModal()" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed bottom-4 right-4 bg-gray-800 text-white py-2 px-4 rounded-lg shadow-lg transform transition-transform duration-300 translate-y-full opacity-0">
+    <span id="toastMessage"></span>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg overflow-hidden shadow-xl w-full max-w-md mx-4">
+        <div class="p-4 bg-gray-100 flex justify-between items-center">
+            <h3 class="text-lg font-semibold text-gray-800">Confirm Deletion</h3>
+            <button onclick="closeDeleteModal()" class="text-gray-500 hover:text-gray-700">
+                <i class="ri-close-line text-xl"></i>
+            </button>
+        </div>
+        <div class="p-6">
+            <p class="text-gray-700 mb-6">Are you sure you want to delete this scan? This action cannot be undone.</p>
+            <input type="hidden" id="deleteScanId" value="">
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="closeDeleteModal()" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
+                    Cancel
+                </button>
+                <button type="button" onclick="confirmDelete()" class="px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mark as Rotten Confirmation Modal -->
+<div id="rottenModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg overflow-hidden shadow-xl w-full max-w-md mx-4">
+        <div class="p-4 bg-gray-100 flex justify-between items-center">
+            <h3 class="text-lg font-semibold text-gray-800">Confirm Marking as Rotten</h3>
+            <button onclick="closeRottenModal()" class="text-gray-500 hover:text-gray-700">
+                <i class="ri-close-line text-xl"></i>
+            </button>
+        </div>
+        <div class="p-6">
+            <p class="text-gray-700 mb-6">Are you sure you want to mark this item as rotten? This will hide the expiry information.</p>
+            <input type="hidden" id="rottenScanId" value="">
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="closeRottenModal()" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
+                    Cancel
+                </button>
+                <button type="button" onclick="confirmMarkAsRotten()" class="px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700">
+                    Mark as Rotten
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Freshness indicator styling */
+    .freshness-indicator {
+        height: 100%;
+    }
+    [data-percent="0"] { width: 0%; }
+    [data-percent="10"] { width: 10%; }
+    [data-percent="20"] { width: 20%; }
+    [data-percent="30"] { width: 30%; }
+    [data-percent="40"] { width: 40%; }
+    [data-percent="50"] { width: 50%; }
+    [data-percent="60"] { width: 60%; }
+    [data-percent="70"] { width: 70%; }
+    [data-percent="80"] { width: 80%; }
+    [data-percent="90"] { width: 90%; }
+    [data-percent="100"] { width: 100%; }
+</style>
+
+<script>
+    // Check all images after page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Log image paths for debugging
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('error', function() {
+                console.error('Failed to load image:', this.src);
+            });
+            
+            img.addEventListener('load', function() {
+                console.log('Successfully loaded image:', this.src);
+            });
+        });
+        
+        // Set up edit title button event listeners
+        document.querySelectorAll('.edit-title-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const scanId = this.getAttribute('data-scan-id');
+                const currentTitle = this.getAttribute('data-scan-title');
+                editTitle(scanId, currentTitle);
+            });
+        });
+        
+        // Delete scan functionality
+        document.querySelectorAll('.delete-scan').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const scanId = this.getAttribute('data-scan-id');
+                openDeleteModal(scanId);
+            });
+        });
+        
+        // Mark as rotten functionality
+        document.querySelectorAll('.mark-rotten-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const scanId = this.getAttribute('data-scan-id');
+                openRottenModal(scanId);
+            });
+        });
+        
+        // Adjust freshness indicator widths on page load
+        document.querySelectorAll('.freshness-indicator').forEach(indicator => {
+            const percent = indicator.getAttribute('data-percent');
+            indicator.style.width = percent + '%';
+        });
+    });
+    
+    // Image modal functions
+    function openImageModal(imageSrc, title) {
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        
+        // Fix image paths if needed
+        if (imageSrc && !imageSrc.startsWith('http') && !imageSrc.startsWith('/')) {
+            imageSrc = '/' + imageSrc;
+        }
+        
+        modalImage.src = imageSrc;
+        modalTitle.textContent = title || 'Image Preview';
+        modal.classList.remove('hidden');
+        
+        // Add error handling for modal image
+        modalImage.onerror = function() {
+            console.error('Failed to load modal image:', this.src);
+            this.src = '/static/uploads/default.jpg';
+            this.classList.add('error-image');
+        };
+        
+        // Add escape key listener
+        document.addEventListener('keydown', handleEscapeKey);
+        
+        // Add click outside to close
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeImageModal();
+            }
+        });
+    }
+    
+    function closeImageModal() {
+        const modal = document.getElementById('imageModal');
+        modal.classList.add('hidden');
+        document.removeEventListener('keydown', handleEscapeKey);
+    }
+    
+    function handleEscapeKey(e) {
+        if (e.key === 'Escape') {
+            closeImageModal();
+            closeEditTitleModal();
+            closeDeleteModal();
+            closeRottenModal();
+        }
+    }
+    
+    // Edit title functions
+    function editTitle(scanId, currentTitle) {
+        const modal = document.getElementById('editTitleModal');
+        const scanIdInput = document.getElementById('editScanId');
+        const titleInput = document.getElementById('editTitleInput');
+        
+        scanIdInput.value = scanId;
+        titleInput.value = currentTitle;
+        
+        modal.classList.remove('hidden');
+        titleInput.focus();
+        
+        // Add escape key listener
+        document.addEventListener('keydown', handleEscapeKey);
+    }
+    
+    function closeEditTitleModal() {
+        const modal = document.getElementById('editTitleModal');
+        modal.classList.add('hidden');
+    }
+    
+    async function saveTitleEdit(event) {
+        event.preventDefault();
+        
+        const scanId = document.getElementById('editScanId').value;
+        const newTitle = document.getElementById('editTitleInput').value.trim();
+        
+        if (!newTitle) {
+            showToast('Title cannot be empty');
+            return;
+        }
+        
+        try {
+            const response = await fetch('/update-scan-title', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    scan_id: scanId,
+                    title: newTitle
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Update the title in the DOM
+                const titleElements = document.querySelectorAll(`.scan-title[data-scan-id="${scanId}"]`);
+                titleElements.forEach(el => {
+                    el.textContent = newTitle;
+                });
+                
+                // Also update any modal titles that might be showing this scan
+                const modalTitles = document.querySelectorAll(`.modal-title[data-scan-id="${scanId}"]`);
+                modalTitles.forEach(el => {
+                    el.textContent = newTitle;
+                });
+                
+                closeEditTitleModal();
+                showToast('Title updated successfully');
+            } else {
+                showToast(`Error: ${data.error || 'Unknown error'}`);
+            }
+        } catch (error) {
+            console.error('Error updating title:', error);
+            showToast('Error saving title. Please try again.');
+        }
+    }
+    
+    // Delete modal functions
+    function openDeleteModal(scanId) {
+        const modal = document.getElementById('deleteModal');
+        const scanIdInput = document.getElementById('deleteScanId');
+        
+        scanIdInput.value = scanId;
+        modal.classList.remove('hidden');
+        
+        // Add escape key listener
+        document.addEventListener('keydown', handleEscapeKey);
+        
+        // Add click outside to close
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeDeleteModal();
+            }
+        });
+    }
+    
+    function closeDeleteModal() {
+        const modal = document.getElementById('deleteModal');
+        modal.classList.add('hidden');
+    }
+    
+    function confirmDelete() {
+        const scanId = document.getElementById('deleteScanId').value;
+        const scanCard = document.querySelector(`.delete-scan[data-scan-id="${scanId}"]`).closest('.bg-white.rounded-lg');
+        
+        // Send delete request to server
+        fetch('/delete-scan', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ scan_id: scanId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Remove the scan card from the UI
+                scanCard.remove();
+                
+                // Check if there are no scans left
+                const remainingScans = document.querySelectorAll('.bg-white.rounded-lg');
+                if (remainingScans.length === 0) {
+                    // Replace grid with "No saved scans" message
+                    const scanGrid = document.querySelector('.grid.grid-cols-1');
+                    const noScansHtml = `
+                    <div class="text-center py-12">
+                        <div class="text-5xl text-gray-300 mb-4">
+                            <i class="ri-image-line"></i>
+                        </div>
+                        <h2 class="text-xl font-medium text-gray-600 mb-2">No saved scans yet</h2>
+                        <p class="text-gray-500 mb-6">Your saved scan results will appear here.</p>
+                        <a href="/scan" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 inline-flex items-center">
+                            <i class="ri-camera-line mr-2"></i> Go to Scan
+                        </a>
+                    </div>`;
+                    
+                    // Replace the grid with the "no scans" message
+                    const parentElement = scanGrid.parentElement;
+                    scanGrid.remove();
+                    parentElement.innerHTML = noScansHtml;
+                }
+                
+                closeDeleteModal();
+                showToast('Scan deleted successfully');
+            } else {
+                closeDeleteModal();
+                showToast('Error deleting scan: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            closeDeleteModal();
+            showToast('An error occurred while deleting the scan.');
+        });
+    }
+    
+    // Mark as Rotten modal functions
+    function openRottenModal(scanId) {
+        const modal = document.getElementById('rottenModal');
+        const scanIdInput = document.getElementById('rottenScanId');
+        
+        scanIdInput.value = scanId;
+        modal.classList.remove('hidden');
+        
+        // Add escape key listener
+        document.addEventListener('keydown', handleEscapeKey);
+        
+        // Add click outside to close
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeRottenModal();
+            }
+        });
+    }
+    
+    function closeRottenModal() {
+        const modal = document.getElementById('rottenModal');
+        modal.classList.add('hidden');
+    }
+    
+    function confirmMarkAsRotten() {
+        const scanId = document.getElementById('rottenScanId').value;
+        
+        // Send request to mark as rotten
+        fetch('/toggle-rotten-status', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                scan_id: scanId,
+                is_rotten: true
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                closeRottenModal();
+                showToast('Item marked as rotten');
+                // Reload the page to show updated status
+                location.reload();
+            } else {
+                closeRottenModal();
+                showToast('Error: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            closeRottenModal();
+            showToast('An error occurred. Please try again.');
+        });
+    }
+    
+    // Toast notification
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        
+        toastMessage.textContent = message;
+        
+        // Show the toast
+        toast.classList.remove('translate-y-full', 'opacity-0');
+        
+        // Hide after 3 seconds
+        setTimeout(() => {
+            toast.classList.add('translate-y-full', 'opacity-0');
+        }, 3000);
+    }
+</script>
+{% endblock %} 

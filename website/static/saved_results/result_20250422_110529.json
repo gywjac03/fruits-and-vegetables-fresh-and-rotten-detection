@@ -1,0 +1,24 @@
+{
+    "user_id": 1,
+    "timestamp": "20250422_110529",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 107.61,
+                "x2": 536.39,
+                "y1": 1.38,
+                "y2": 640
+            },
+            "class": "rotten cucumber",
+            "confidence": 89.52
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250422_110529_upload_20250422_110527_rottenCucumber-533-_jpg.rf.5a5551e0abcea54608271e249b2b224b.jpg",
+    "dominant_produce": "rotten cucumber",
+    "expiry_date": null,
+    "storage_recommendation": null
+}
