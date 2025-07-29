@@ -1,0 +1,13 @@
+{
+    "user_id": 1,
+    "timestamp": "20250420_112154",
+    "detections": [],
+    "image_size": {
+        "height": 720,
+        "width": 1280
+    },
+    "image_path": "website/static/saved_results/saved_20250420_112154_camera_20250420_112151.jpg",
+    "dominant_produce": null,
+    "expiry_date": null,
+    "storage_recommendation": null
+}

@@ -1,0 +1,31 @@
+{
+    "user_id": 1,
+    "timestamp": "20250415_104834",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 6.92,
+                "x2": 561.79,
+                "y1": 164.4,
+                "y2": 590.23
+            },
+            "class": "rotten potato",
+            "confidence": 76.03
+        },
+        {
+            "bbox": {
+                "x1": 174.88,
+                "x2": 449.4,
+                "y1": 36.25,
+                "y2": 271.88
+            },
+            "class": "rotten potato",
+            "confidence": 25.13
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250415_104834_upload_20250415_104822_rottenPotato-570-_jpg.rf.ffc6a8ad42398b4ecdf83245c9b2489b.jpg"
+}

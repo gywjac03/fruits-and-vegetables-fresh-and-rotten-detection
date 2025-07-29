@@ -1,0 +1,24 @@
+{
+    "user_id": 1,
+    "timestamp": "20250422_110051",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 48.2,
+                "x2": 600.05,
+                "y1": 184.52,
+                "y2": 491.65
+            },
+            "class": "fresh banana",
+            "confidence": 89.94
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250422_110051_upload_20250422_110041_freshBanana-98-_jpg.rf.87e31e31a0f1ba16c2cb1c76b88d3ce3.jpg",
+    "dominant_produce": "fresh banana",
+    "expiry_date": "2025-04-29T11:00:44.432000+08:00",
+    "storage_recommendation": "Room Temperature: Up to 7 days in a cool, dark place. Refrigeration darkens skin but keeps fruit fresh longer."
+}

@@ -1,0 +1,34 @@
+{
+    "user_id": 1,
+    "timestamp": "20250426_215615",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 150.93,
+                "x2": 516.11,
+                "y1": 179.12,
+                "y2": 467.93
+            },
+            "class": "rotten potato",
+            "confidence": 59.88
+        },
+        {
+            "bbox": {
+                "x1": 0.44,
+                "x2": 533.11,
+                "y1": 0,
+                "y2": 397.66
+            },
+            "class": "rotten mango",
+            "confidence": 25.84
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250426_215615_upload_20250426_215610_rottenPotato-445-_jpg.rf.aa41eb90ebe9fe372a16abb116de8825.jpg",
+    "dominant_produce": "rotten potato",
+    "expiry_date": null,
+    "storage_recommendation": null
+}

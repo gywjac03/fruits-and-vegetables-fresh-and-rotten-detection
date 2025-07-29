@@ -1,0 +1,64 @@
+{
+    "user_id": 2,
+    "timestamp": "20250429_120745",
+    "detections": [
+        {
+            "box": {
+                "x1": 164.58712768554688,
+                "x2": 306.0236511230469,
+                "y1": 360.4530029296875,
+                "y2": 506.4552001953125
+            },
+            "class": "fresh potato",
+            "confidence": 0.6472311019897461
+        },
+        {
+            "box": {
+                "x1": 302.78021240234375,
+                "x2": 392.72979736328125,
+                "y1": 344.41925048828125,
+                "y2": 486.134765625
+            },
+            "class": "fresh potato",
+            "confidence": 0.6024671792984009
+        },
+        {
+            "box": {
+                "x1": 245.6865997314453,
+                "x2": 366.73968505859375,
+                "y1": 239.0997314453125,
+                "y2": 385.15740966796875
+            },
+            "class": "fresh potato",
+            "confidence": 0.5517841577529907
+        },
+        {
+            "box": {
+                "x1": 376.2354736328125,
+                "x2": 466.8463134765625,
+                "y1": 298.61865234375,
+                "y2": 466.5291748046875
+            },
+            "class": "fresh potato",
+            "confidence": 0.37743234634399414
+        },
+        {
+            "box": {
+                "x1": 377.00653076171875,
+                "x2": 472.327880859375,
+                "y1": 293.787841796875,
+                "y2": 474.90850830078125
+            },
+            "class": "rotten potato",
+            "confidence": 0.2774878740310669
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250429_120745_upload_20250429_120744_rottenPotato-385-_jpg.rf.140bf5456d0b42a5d67e3fc5c70e07f5.jpg",
+    "dominant_produce": "fresh potato",
+    "expiry_date": "2025-07-13T12:07:44.699000+08:00",
+    "storage_recommendation": "Room Temperature: 2\u20133 months in a cool, dark, well-ventilated place. Refrigeration not recommended."
+}

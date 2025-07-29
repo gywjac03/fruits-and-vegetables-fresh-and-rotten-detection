@@ -1,0 +1,54 @@
+{
+    "user_id": 1,
+    "timestamp": "20250418_154941",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 227.97,
+                "x2": 435.71,
+                "y1": 271.63,
+                "y2": 539.05
+            },
+            "class": "fresh apple",
+            "confidence": 95.07
+        },
+        {
+            "bbox": {
+                "x1": 379.73,
+                "x2": 580.56,
+                "y1": 147.83,
+                "y2": 413.61
+            },
+            "class": "fresh apple",
+            "confidence": 90.36
+        },
+        {
+            "bbox": {
+                "x1": 0,
+                "x2": 226.47,
+                "y1": 413.45,
+                "y2": 639.91
+            },
+            "class": "fresh apple",
+            "confidence": 89.87
+        },
+        {
+            "bbox": {
+                "x1": 41.19,
+                "x2": 249.6,
+                "y1": 196.87,
+                "y2": 448.46
+            },
+            "class": "fresh apple",
+            "confidence": 87.48
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250418_154941_upload_20250418_154939_freshApple-433-_png.rf.55f5be71a4a47a6c13b9d2e11ffd7e10.jpg",
+    "dominant_produce": "fresh apple",
+    "expiry_date": "2025-05-30T15:49:39.664000+08:00",
+    "storage_recommendation": "Refrigerated: 4\u20136 weeks in the crisper drawer. Room Temperature: 5\u20137 days."
+}

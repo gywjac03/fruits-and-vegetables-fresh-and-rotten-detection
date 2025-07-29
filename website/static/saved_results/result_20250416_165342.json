@@ -1,0 +1,111 @@
+{
+    "user_id": 1,
+    "timestamp": "20250416_165342",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 0.06,
+                "x2": 147,
+                "y1": 172.93,
+                "y2": 411.62
+            },
+            "class": "fresh bellpepper",
+            "confidence": 90.95
+        },
+        {
+            "bbox": {
+                "x1": 134.02,
+                "x2": 321.39,
+                "y1": 102.08,
+                "y2": 311.52
+            },
+            "class": "fresh bellpepper",
+            "confidence": 89.82
+        },
+        {
+            "bbox": {
+                "x1": 314.57,
+                "x2": 537.69,
+                "y1": 98.05,
+                "y2": 325.3
+            },
+            "class": "fresh bellpepper",
+            "confidence": 88.15
+        },
+        {
+            "bbox": {
+                "x1": 225.73,
+                "x2": 482.52,
+                "y1": 348.63,
+                "y2": 621.64
+            },
+            "class": "fresh bellpepper",
+            "confidence": 84.91
+        },
+        {
+            "bbox": {
+                "x1": 79.16,
+                "x2": 242,
+                "y1": 331.37,
+                "y2": 522.98
+            },
+            "class": "fresh bellpepper",
+            "confidence": 84.02
+        },
+        {
+            "bbox": {
+                "x1": 0,
+                "x2": 164.73,
+                "y1": 58.91,
+                "y2": 204.68
+            },
+            "class": "fresh bellpepper",
+            "confidence": 81.33
+        },
+        {
+            "bbox": {
+                "x1": 417.58,
+                "x2": 640,
+                "y1": 574.13,
+                "y2": 640
+            },
+            "class": "fresh bellpepper",
+            "confidence": 72.52
+        },
+        {
+            "bbox": {
+                "x1": 122.02,
+                "x2": 302.19,
+                "y1": 530.87,
+                "y2": 640
+            },
+            "class": "fresh bellpepper",
+            "confidence": 65.08
+        },
+        {
+            "bbox": {
+                "x1": 451.1,
+                "x2": 566.22,
+                "y1": 432.19,
+                "y2": 587.35
+            },
+            "class": "fresh bellpepper",
+            "confidence": 49.08
+        },
+        {
+            "bbox": {
+                "x1": 0,
+                "x2": 83.03,
+                "y1": 548.07,
+                "y2": 640
+            },
+            "class": "fresh bellpepper",
+            "confidence": 30.65
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250416_165342_upload_20250416_165340_freshPepper-366-_jpg.rf.cbeb72e14d983025e80081efabbda662.jpg"
+}

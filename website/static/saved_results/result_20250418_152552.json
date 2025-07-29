@@ -1,0 +1,24 @@
+{
+    "user_id": 1,
+    "timestamp": "20250418_152552",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 103.2,
+                "x2": 447.35,
+                "y1": 102.65,
+                "y2": 574.83
+            },
+            "class": "rotten mango",
+            "confidence": 93.35
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250418_152552_upload_20250418_152543_rottenMango-96-_jpg.rf.bdcd2e8e4a286508232e2bfafcc09eec.jpg",
+    "dominant_produce": "rotten mango",
+    "expiry_date": null,
+    "storage_recommendation": null
+}

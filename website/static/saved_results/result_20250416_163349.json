@@ -1,0 +1,21 @@
+{
+    "user_id": 1,
+    "timestamp": "20250416_163349",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 184.18,
+                "x2": 469.06,
+                "y1": 137.76,
+                "y2": 476.77
+            },
+            "class": "fresh orange",
+            "confidence": 93.12
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250416_163349_upload_20250416_163342_freshOrange-60-_jpg.rf.251a8643b603777a8b6a66439c6332c7.jpg"
+}

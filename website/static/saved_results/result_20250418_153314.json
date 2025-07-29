@@ -1,0 +1,64 @@
+{
+    "user_id": 1,
+    "timestamp": "20250418_153314",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 156.71,
+                "x2": 604.18,
+                "y1": 31.17,
+                "y2": 377.03
+            },
+            "class": "fresh potato",
+            "confidence": 85.85
+        },
+        {
+            "bbox": {
+                "x1": 215.04,
+                "x2": 486.3,
+                "y1": 0.06,
+                "y2": 129.69
+            },
+            "class": "fresh potato",
+            "confidence": 70.99
+        },
+        {
+            "bbox": {
+                "x1": 0,
+                "x2": 194.68,
+                "y1": 270.77,
+                "y2": 638.93
+            },
+            "class": "fresh potato",
+            "confidence": 68.05
+        },
+        {
+            "bbox": {
+                "x1": 162.94,
+                "x2": 434.72,
+                "y1": 291.66,
+                "y2": 597.65
+            },
+            "class": "fresh potato",
+            "confidence": 65.52
+        },
+        {
+            "bbox": {
+                "x1": 34.82,
+                "x2": 273.22,
+                "y1": 137.59,
+                "y2": 354.5
+            },
+            "class": "fresh potato",
+            "confidence": 61.15
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250418_153314_upload_20250418_153311_freshPotato-169-_jpg.rf.ecbc270d2c638f3ffe9495fd391e63b5.jpg",
+    "dominant_produce": "fresh potato",
+    "expiry_date": "2025-07-02T07:33:12.074000+00:00",
+    "storage_recommendation": "Room Temperature: 2\u20133 months in a cool, dark, well-ventilated place. Refrigeration not recommended."
+}

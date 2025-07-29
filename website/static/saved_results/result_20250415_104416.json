@@ -1,0 +1,21 @@
+{
+    "user_id": 1,
+    "timestamp": "20250415_104416",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 14.37,
+                "x2": 207.49,
+                "y1": 238.07,
+                "y2": 500.04
+            },
+            "class": "fresh mango",
+            "confidence": 88.22
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250415_104416_upload_20250415_104408_freshMango-271-_jpg.rf.ebe161e04fc04fa8e01f5ffc1ebead97.jpg"
+}

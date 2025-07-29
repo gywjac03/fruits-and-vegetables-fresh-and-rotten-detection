@@ -1,0 +1,44 @@
+{
+    "user_id": 1,
+    "timestamp": "20250421_170939",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 237.53,
+                "x2": 488.84,
+                "y1": 361.22,
+                "y2": 496.91
+            },
+            "class": "fresh mango",
+            "confidence": 81.51
+        },
+        {
+            "bbox": {
+                "x1": 291.39,
+                "x2": 479.59,
+                "y1": 160.38,
+                "y2": 304.87
+            },
+            "class": "fresh mango",
+            "confidence": 79.81
+        },
+        {
+            "bbox": {
+                "x1": 73.74,
+                "x2": 243.02,
+                "y1": 34.53,
+                "y2": 195.75
+            },
+            "class": "fresh mango",
+            "confidence": 78.84
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250421_170939_upload_20250421_170937_freshMango-194-_png.rf.55f74b03ff5ee6b21fdfda493693f0c4.jpg",
+    "dominant_produce": "fresh mango",
+    "expiry_date": "2025-04-28T17:09:37.129000+08:00",
+    "storage_recommendation": "Ripe (Refrigerated): 5\u20137 days. Ripe (Room Temperature): 2\u20135 days."
+}

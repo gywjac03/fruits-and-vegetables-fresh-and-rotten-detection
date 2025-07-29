@@ -1,0 +1,184 @@
+{
+    "user_id": 1,
+    "timestamp": "20250420_134521",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 0,
+                "x2": 62.1,
+                "y1": 309.41,
+                "y2": 594.6
+            },
+            "class": "fresh potato",
+            "confidence": 86.18
+        },
+        {
+            "bbox": {
+                "x1": 109.07,
+                "x2": 287.63,
+                "y1": 272.95,
+                "y2": 551.81
+            },
+            "class": "fresh potato",
+            "confidence": 83.47
+        },
+        {
+            "bbox": {
+                "x1": 577.26,
+                "x2": 640,
+                "y1": 251.8,
+                "y2": 475.17
+            },
+            "class": "fresh potato",
+            "confidence": 80.33
+        },
+        {
+            "bbox": {
+                "x1": 447.21,
+                "x2": 586.94,
+                "y1": 311.69,
+                "y2": 543.48
+            },
+            "class": "fresh potato",
+            "confidence": 77.68
+        },
+        {
+            "bbox": {
+                "x1": 63.54,
+                "x2": 236.3,
+                "y1": 0.17,
+                "y2": 187.36
+            },
+            "class": "fresh potato",
+            "confidence": 74.07
+        },
+        {
+            "bbox": {
+                "x1": 508.28,
+                "x2": 639.81,
+                "y1": 124.95,
+                "y2": 296.6
+            },
+            "class": "fresh potato",
+            "confidence": 70.95
+        },
+        {
+            "bbox": {
+                "x1": 266.86,
+                "x2": 396.41,
+                "y1": 358.71,
+                "y2": 573.05
+            },
+            "class": "fresh potato",
+            "confidence": 68.8
+        },
+        {
+            "bbox": {
+                "x1": 226.41,
+                "x2": 448.73,
+                "y1": 55.37,
+                "y2": 350.57
+            },
+            "class": "fresh potato",
+            "confidence": 66.28
+        },
+        {
+            "bbox": {
+                "x1": 0,
+                "x2": 55.19,
+                "y1": 22.11,
+                "y2": 220.76
+            },
+            "class": "fresh potato",
+            "confidence": 62.67
+        },
+        {
+            "bbox": {
+                "x1": 21.96,
+                "x2": 159.32,
+                "y1": 170.53,
+                "y2": 426.83
+            },
+            "class": "fresh potato",
+            "confidence": 60.25
+        },
+        {
+            "bbox": {
+                "x1": 423.4,
+                "x2": 528.79,
+                "y1": 36.54,
+                "y2": 234.4
+            },
+            "class": "fresh potato",
+            "confidence": 50.73
+        },
+        {
+            "bbox": {
+                "x1": 368.91,
+                "x2": 511.86,
+                "y1": 0,
+                "y2": 79.55
+            },
+            "class": "fresh potato",
+            "confidence": 44.22
+        },
+        {
+            "bbox": {
+                "x1": 489.52,
+                "x2": 629.49,
+                "y1": 0,
+                "y2": 182.65
+            },
+            "class": "fresh potato",
+            "confidence": 36.66
+        },
+        {
+            "bbox": {
+                "x1": 417.85,
+                "x2": 579.98,
+                "y1": 226.49,
+                "y2": 422.21
+            },
+            "class": "fresh potato",
+            "confidence": 34.2
+        },
+        {
+            "bbox": {
+                "x1": 550.53,
+                "x2": 639.98,
+                "y1": 425.3,
+                "y2": 594.36
+            },
+            "class": "fresh potato",
+            "confidence": 28.96
+        },
+        {
+            "bbox": {
+                "x1": 289.93,
+                "x2": 401.17,
+                "y1": 150.04,
+                "y2": 302.01
+            },
+            "class": "fresh potato",
+            "confidence": 28.56
+        },
+        {
+            "bbox": {
+                "x1": 76.99,
+                "x2": 229.37,
+                "y1": 0,
+                "y2": 48.22
+            },
+            "class": "fresh potato",
+            "confidence": 25.26
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250420_134521_upload_20250420_134447_rottenPotato-519-_jpg.rf.8f95f68e4857b36eab3f6801e810110a.jpg",
+    "dominant_produce": "fresh potato",
+    "expiry_date": "2025-07-04T13:44:47.491000+08:00",
+    "storage_recommendation": "Room Temperature: 2\u20133 months in a cool, dark, well-ventilated place. Refrigeration not recommended."
+}

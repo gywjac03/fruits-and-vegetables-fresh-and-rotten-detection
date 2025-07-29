@@ -1,0 +1,84 @@
+{
+    "user_id": 1,
+    "timestamp": "20250422_110122",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 228.34,
+                "x2": 416.36,
+                "y1": 248.52,
+                "y2": 567.62
+            },
+            "class": "fresh banana",
+            "confidence": 54.33
+        },
+        {
+            "bbox": {
+                "x1": 0.62,
+                "x2": 227.27,
+                "y1": 109.31,
+                "y2": 415.46
+            },
+            "class": "fresh banana",
+            "confidence": 49.78
+        },
+        {
+            "bbox": {
+                "x1": 327.13,
+                "x2": 480.86,
+                "y1": 238.61,
+                "y2": 555.31
+            },
+            "class": "fresh banana",
+            "confidence": 46.76
+        },
+        {
+            "bbox": {
+                "x1": 41.24,
+                "x2": 263.87,
+                "y1": 205.87,
+                "y2": 500.99
+            },
+            "class": "fresh banana",
+            "confidence": 46.24
+        },
+        {
+            "bbox": {
+                "x1": 128.23,
+                "x2": 331.8,
+                "y1": 236.37,
+                "y2": 539.66
+            },
+            "class": "fresh banana",
+            "confidence": 45.31
+        },
+        {
+            "bbox": {
+                "x1": 471.89,
+                "x2": 639.63,
+                "y1": 126.6,
+                "y2": 463.57
+            },
+            "class": "fresh banana",
+            "confidence": 33.34
+        },
+        {
+            "bbox": {
+                "x1": 441.18,
+                "x2": 556.02,
+                "y1": 198.08,
+                "y2": 506.18
+            },
+            "class": "fresh banana",
+            "confidence": 32.82
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250422_110122_upload_20250422_110119_freshBanana-58-_jpg.rf.0b9cdbef0c5088661284441c57dd454d.jpg",
+    "dominant_produce": "fresh banana",
+    "expiry_date": "2025-04-29T11:01:19.196000+08:00",
+    "storage_recommendation": "Room Temperature: Up to 7 days in a cool, dark place. Refrigeration darkens skin but keeps fruit fresh longer."
+}

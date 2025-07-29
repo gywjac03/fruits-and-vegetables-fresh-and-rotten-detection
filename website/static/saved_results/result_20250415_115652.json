@@ -1,0 +1,21 @@
+{
+    "user_id": 1,
+    "timestamp": "20250415_115652",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 20.79,
+                "x2": 556.44,
+                "y1": 4.83,
+                "y2": 597.26
+            },
+            "class": "rotten apple",
+            "confidence": 51.8
+        }
+    ],
+    "image_size": {
+        "height": 640,
+        "width": 640
+    },
+    "image_path": "website/static/saved_results/saved_20250415_115652_upload_20250415_115650_rottenApple-480-_jpg.rf.efe4e8960c6ef8835076299ee6bad231.jpg"
+}

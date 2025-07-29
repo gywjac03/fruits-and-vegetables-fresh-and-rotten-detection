@@ -1,0 +1,21 @@
+{
+    "user_id": 1,
+    "timestamp": "20250416_163811",
+    "detections": [
+        {
+            "bbox": {
+                "x1": 832.17,
+                "x2": 1857.18,
+                "y1": 24.27,
+                "y2": 1233.07
+            },
+            "class": "fresh orange",
+            "confidence": 28.04
+        }
+    ],
+    "image_size": {
+        "height": 1536,
+        "width": 2736
+    },
+    "image_path": "website/static/saved_results/saved_20250416_163811_upload_20250416_163758_DSC02440.JPG"
+}

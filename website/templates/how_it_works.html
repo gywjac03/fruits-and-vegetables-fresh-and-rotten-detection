@@ -1,0 +1,114 @@
+{% extends "base.html" %} {% block title %}How It Works{% endblock %}
+
+{% block content %}
+<div class="text-center mt-6 mb-6">
+    <h1 class="text-4xl md:text-5xl font-bold text-gray-800">How FreshScan Works</h1>
+</div>
+<div class="py-6">
+    <div class="container mx-auto px-4">
+        <!-- Step 1 -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2">
+                    <img src="/static/images/1091189.jpg" alt="Take a photo of your fruit" class="w-full h-full object-cover">
+                </div>
+                <div class="md:w-1/2 p-8">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center mr-4">
+                            <span class="font-bold">1</span>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800">Take a Photo</h2>
+                    </div>
+                    <p class="text-gray-600 text-lg">
+                        Simply point your camera at any fruit and take a clear photo. FreshScan works best with good lighting and a focused image. You can take photos of individual fruits or groups of the same type.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2 order-2 md:order-1">
+                    <div class="p-8">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center mr-4">
+                                <span class="font-bold">2</span>
+                            </div>
+                            <h2 class="text-2xl font-bold text-gray-800">AI Analysis</h2>
+                        </div>
+                        <p class="text-gray-600 text-lg">
+                            Our advanced AI algorithms analyze the uploaded image or image in real-time, identifying the fruit type and assessing its freshness.
+                        </p>
+                    </div>
+                </div>
+                <div class="md:w-1/2 order-1 md:order-2">
+                    <img src="/static/images/ai-analysis.jpg" alt="AI analysis process" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2">
+                    <img src="/static/images/freshness-assessment.avif" alt="Freshness assessment" class="w-full h-full object-cover">
+                </div>
+                <div class="md:w-1/2 p-8">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center mr-4">
+                            <span class="font-bold">3</span>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800">Freshness Assessment</h2>
+                    </div>
+                    <p class="text-gray-600 text-lg">
+                        FreshScan provides a detailed freshness assessment. The system provides an estimated shelf life and storage recommendations to ensure the fruit lasts as long as possible.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2 order-2 md:order-1">
+                    <div class="p-8">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center mr-4">
+                                <span class="font-bold">4</span>
+                            </div>
+                            <h2 class="text-2xl font-bold text-gray-800">Storage Recommendations</h2>
+                        </div>
+                        <p class="text-gray-600 text-lg">
+                            Get personalized storage tips based on the fruit type. FreshScan recommends optimal storage conditions to extend the shelf life of your fruits.
+                        </p>
+                    </div>
+                </div>
+                <div class="md:w-1/2 order-1 md:order-2">
+                    <img src="/static/images/storage-recommendations.avif" alt="Storage recommendations" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2">
+                    <img src="/static/images/track-manage.avif" alt="Track and manage" class="w-full h-full object-cover">
+                </div>
+                <div class="md:w-1/2 p-8">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center mr-4">
+                            <span class="font-bold">5</span>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800">Track and Manage</h2>
+                    </div>
+                    <p class="text-gray-600 text-lg">
+                        Save your scan results to track freshness over time. Track when the fruits are approaching their expiration date and manage your fruit inventory efficiently.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
